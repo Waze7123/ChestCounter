@@ -1,0 +1,9 @@
+bin/
+obj/
+dist/
+*.user
+.vs/
+# Ficheiros só deste PC (ícone antigo, rascunhos)
+local/
+# Capturas da revisão de design (mostram nomes de outros jogadores)
+.impeccable/review/

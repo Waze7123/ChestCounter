@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>ChestCounter</AssemblyName>
+    <Product>ChestCounter</Product>
+    <RootNamespace>ContadorBaus</RootNamespace>
+    <Version>1.0.0</Version>
+    <!-- Desenho em píxeis fixos: o Windows escala por GDI (texto nítido) em vez de cortar texto acima de 100%. -->
+    <ApplicationHighDpiMode>DpiUnawareGdiScaled</ApplicationHighDpiMode>
+    <!-- O leitor de replays descobre os tipos por reflexão: sem trimming. -->
+    <PublishTrimmed>false</PublishTrimmed>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <!-- Sem designer: as propriedades dos controlos não precisam de serialização. -->
+    <NoWarn>$(NoWarn);WFO1000</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Ícone da app (emblema dourado): .ico para a janela/bandeja, .png para o logótipo desenhado na app. -->
+    <EmbeddedResource Include="Assets\app.ico" LogicalName="ChestCounter.app.ico" />
+    <EmbeddedResource Include="Assets\icone.png" LogicalName="ChestCounter.icone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ContadorBaus.Core\ContadorBaus.Core.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,493 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-15T13:20:21.131400+00:00",
+  "title": "Design System: Contador de Baús",
+  "extensions": {
+    "colorMeta": {
+      "ground": {
+        "role": "neutral",
+        "displayName": "Ground",
+        "canonical": "#0C0B09",
+        "tonalRamp": [
+          "#161513",
+          "#2C2A25",
+          "#4F4A40",
+          "#736A59",
+          "#9C917D",
+          "#BBB5AA",
+          "#D7D5D0",
+          "#F1F0EF"
+        ]
+      },
+      "rail": {
+        "role": "neutral",
+        "displayName": "Rail",
+        "canonical": "#110F0C",
+        "tonalRamp": [
+          "#161513",
+          "#2D2A25",
+          "#50493E",
+          "#756957",
+          "#9F907A",
+          "#BDB5A8",
+          "#D8D5CF",
+          "#F1F0EE"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface",
+        "canonical": "#15130F",
+        "tonalRamp": [
+          "#161513",
+          "#2D2A25",
+          "#504A3F",
+          "#756B57",
+          "#9E927A",
+          "#BCB6A9",
+          "#D8D5CF",
+          "#F1F0EE"
+        ]
+      },
+      "hover": {
+        "role": "neutral",
+        "displayName": "Hover",
+        "canonical": "#1D1A15",
+        "tonalRamp": [
+          "#161513",
+          "#2D2A25",
+          "#504A3F",
+          "#746A58",
+          "#9E917B",
+          "#BCB5A9",
+          "#D8D5CF",
+          "#F1F0EF"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#2A251C",
+        "tonalRamp": [
+          "#161512",
+          "#2E2A24",
+          "#524A3D",
+          "#786B54",
+          "#A29277",
+          "#BEB6A7",
+          "#D9D5CE",
+          "#F1F0EE"
+        ]
+      },
+      "gold": {
+        "role": "primary",
+        "displayName": "Ledger Gold",
+        "canonical": "#E3B04B",
+        "tonalRamp": [
+          "#1C170D",
+          "#3A2F17",
+          "#6E5421",
+          "#A87C24",
+          "#DBA63D",
+          "#DDC088",
+          "#E7DAC1",
+          "#F5F1EA"
+        ]
+      },
+      "gold-bright": {
+        "role": "primary",
+        "displayName": "Lit Gold",
+        "canonical": "#F6D27E",
+        "tonalRamp": [
+          "#1D180C",
+          "#3E3114",
+          "#755A1A",
+          "#B48518",
+          "#EAB22E",
+          "#E5C780",
+          "#EADDBD",
+          "#F6F2E9"
+        ]
+      },
+      "gold-deep": {
+        "role": "primary",
+        "displayName": "Deep Gold",
+        "canonical": "#5A4419",
+        "tonalRamp": [
+          "#1A160F",
+          "#362D1B",
+          "#65512A",
+          "#997633",
+          "#C9A04F",
+          "#D3BD92",
+          "#E2D8C5",
+          "#F4F1EC"
+        ]
+      },
+      "gold-wash": {
+        "role": "primary",
+        "displayName": "Gold Wash",
+        "canonical": "#261F11",
+        "tonalRamp": [
+          "#181611",
+          "#322C20",
+          "#5B4E33",
+          "#887144",
+          "#B59A63",
+          "#C9BA9C",
+          "#DED7CA",
+          "#F2F1ED"
+        ]
+      },
+      "on-gold": {
+        "role": "primary",
+        "displayName": "Ink on Gold",
+        "canonical": "#181206",
+        "tonalRamp": [
+          "#1A160E",
+          "#372E1A",
+          "#675228",
+          "#9C7830",
+          "#CDA24C",
+          "#D5BE90",
+          "#E3D9C4",
+          "#F4F1EB"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Warm White",
+        "canonical": "#F1E9D8",
+        "tonalRamp": [
+          "#191610",
+          "#342D1D",
+          "#60502F",
+          "#90753C",
+          "#BF9F59",
+          "#CEBC97",
+          "#E0D8C7",
+          "#F3F1EC"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "canonical": "#A69B85",
+        "tonalRamp": [
+          "#161513",
+          "#2D2A25",
+          "#504A3F",
+          "#746B58",
+          "#9D927B",
+          "#BCB6A9",
+          "#D8D5D0",
+          "#F1F0EF"
+        ]
+      },
+      "faint": {
+        "role": "neutral",
+        "displayName": "Faint (lowest text tier)",
+        "canonical": "#8A806C",
+        "tonalRamp": [
+          "#161513",
+          "#2C2A26",
+          "#4E4A41",
+          "#716A5B",
+          "#99917F",
+          "#BAB5AB",
+          "#D7D5D0",
+          "#F1F0EF"
+        ]
+      },
+      "dim": {
+        "role": "neutral",
+        "displayName": "Dim (strokes/disabled only, never text)",
+        "canonical": "#60584A",
+        "tonalRamp": [
+          "#161513",
+          "#2C2A26",
+          "#4E4941",
+          "#72695A",
+          "#9A907E",
+          "#BAB5AB",
+          "#D7D5D0",
+          "#F1F0EF"
+        ]
+      },
+      "live": {
+        "role": "status",
+        "displayName": "Live",
+        "canonical": "#78D68C",
+        "tonalRamp": [
+          "#0F1A11",
+          "#1C3621",
+          "#2B6337",
+          "#36964A",
+          "#53C66B",
+          "#93D2A1",
+          "#C6E2CC",
+          "#ECF4ED"
+        ]
+      },
+      "error": {
+        "role": "status",
+        "displayName": "Error",
+        "canonical": "#E8705C",
+        "tonalRamp": [
+          "#1C0F0D",
+          "#3B1C17",
+          "#6F2B20",
+          "#AA3622",
+          "#DD523B",
+          "#DE9387",
+          "#E7C6C0",
+          "#F5ECEA"
+        ]
+      },
+      "mark-rare": {
+        "role": "tertiary",
+        "displayName": "Rare Purple mark",
+        "canonical": "#D6A0FF",
+        "tonalRamp": [
+          "#160A1F",
+          "#2C1141",
+          "#4F137C",
+          "#720CC0",
+          "#9B20F8",
+          "#BA78ED",
+          "#D7B9EE",
+          "#F1E8F7"
+        ]
+      },
+      "mark-relic": {
+        "role": "tertiary",
+        "displayName": "Relic Blue mark",
+        "canonical": "#7EB6FF",
+        "tonalRamp": [
+          "#0A131F",
+          "#112641",
+          "#13407C",
+          "#0C5AC0",
+          "#207EF8",
+          "#78ABED",
+          "#B9D0EE",
+          "#E8EFF7"
+        ]
+      },
+      "mark-buried": {
+        "role": "tertiary",
+        "displayName": "Buried Bronze mark",
+        "canonical": "#CD9662",
+        "tonalRamp": [
+          "#1A140F",
+          "#35281C",
+          "#63472C",
+          "#946538",
+          "#C48B54",
+          "#D1B294",
+          "#E1D3C6",
+          "#F3F0EC"
+        ]
+      },
+      "mark-poster": {
+        "role": "tertiary",
+        "displayName": "Poster Green mark",
+        "canonical": "#96D6A0",
+        "tonalRamp": [
+          "#101911",
+          "#1E3322",
+          "#305E38",
+          "#3F8D4B",
+          "#5DBC6C",
+          "#99CCA1",
+          "#C8DFCC",
+          "#EDF3EE"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Count",
+        "purpose": "Main chest count on Painel only, gold."
+      },
+      "headline": {
+        "displayName": "Ledger value",
+        "purpose": "Inline ledger values; overlay counts (18-24pt)."
+      },
+      "title": {
+        "displayName": "Page title",
+        "purpose": "Top bar page title."
+      },
+      "heading": {
+        "displayName": "Section",
+        "purpose": "Section titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running UI text."
+      },
+      "body-strong": {
+        "displayName": "Body strong",
+        "purpose": "Primary button, active nav."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Captions, headers, axis labels, status."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "1 - 2^(-10t), 15ms timer; skipped when Windows UI effects are off",
+        "purpose": "All animation."
+      },
+      {
+        "name": "hover-in",
+        "value": "120ms",
+        "purpose": "Hover fade in."
+      },
+      {
+        "name": "hover-out",
+        "value": "180ms",
+        "purpose": "Hover fade out."
+      },
+      {
+        "name": "toggle",
+        "value": "220ms",
+        "purpose": "Toggle knob slide."
+      },
+      {
+        "name": "nav-indicator",
+        "value": "260ms",
+        "purpose": "Active nav pill slide."
+      },
+      {
+        "name": "bars-grow",
+        "value": "520ms",
+        "purpose": "Daily bars on period change."
+      },
+      {
+        "name": "strip-reveal",
+        "value": "700ms",
+        "purpose": "Loot strip marks reveal."
+      }
+    ],
+    "breakpoints": [],
+    "platform": {
+      "toolkit": "WinForms .NET 10, GDI+ custom painted",
+      "dpiMode": "DpiUnawareGdiScaled (sizes authored at 96 DPI)",
+      "units": "font sizes in pt, geometry in px"
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The gold action (Analisar).",
+      "html": "<button class=\"ds-btn-primary\">Analisar</button>",
+      "css": ".ds-btn-primary{font-family:'Segoe UI Variable Text','Segoe UI',sans-serif;font-size:9.5pt;font-weight:600;height:32px;padding:0 14px;background:#E3B04B;color:#181206;border:1px solid #E3B04B;border-radius:7px;cursor:pointer;transition:background .12s,border-color .12s}.ds-btn-primary:hover{background:#F6D27E;border-color:#F6D27E}.ds-btn-primary:focus-visible{outline:1.5px solid #F6D27E;outline-offset:-4px}.ds-btn-primary:disabled{background:#5A4419;border-color:#5A4419}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary actions and the date picker trigger.",
+      "html": "<button class=\"ds-btn-ghost\">08/11/2026</button>",
+      "css": ".ds-btn-ghost{font-family:'Segoe UI Variable Text','Segoe UI',sans-serif;font-size:9.5pt;height:32px;padding:0 14px;background:#15130F;color:#F1E9D8;border:1px solid #2A251C;border-radius:7px;cursor:pointer;transition:background .12s,border-color .12s}.ds-btn-ghost:hover{background:#1D1A15;border-color:#5C5444}.ds-btn-ghost:focus-visible{outline:1.5px solid #F6D27E;outline-offset:-4px}.ds-btn-ghost:disabled{color:#8A806C}"
+    },
+    {
+      "name": "Period Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Period filters in the top bar.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip ds-chip-on\">Sempre</button><button class=\"ds-chip\">Hoje</button><button class=\"ds-chip\">7 dias</button></div>",
+      "css": ".ds-chips{display:flex;gap:6px;background:#0C0B09;padding:8px}.ds-chip{font-family:'Segoe UI Variable Text','Segoe UI',sans-serif;font-size:9.5pt;height:28px;padding:0 11px;background:#0C0B09;color:#A69B85;border:1px solid #2A251C;border-radius:7px;cursor:pointer;transition:all .12s}.ds-chip:hover{background:#1D1A15;color:#F1E9D8;border-color:#4E4739}.ds-chip-on,.ds-chip-on:hover{background:#261F11;color:#F6D27E;border-color:#5A4419}.ds-chip:focus-visible{outline:1.5px solid #F6D27E;outline-offset:-4px}"
+    },
+    {
+      "name": "Navigation Rail",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Left rail; active item on a gold-wash pill.",
+      "html": "<nav class=\"ds-rail\"><a class=\"ds-nav ds-nav-on\">Painel</a><a class=\"ds-nav\">Partidas</a><a class=\"ds-nav\">Modos</a></nav>",
+      "css": ".ds-rail{width:172px;background:#110F0C;border-right:1px solid #2A251C;padding:10px;display:flex;flex-direction:column;gap:2px}.ds-nav{font-family:'Segoe UI Variable Text','Segoe UI',sans-serif;font-size:9.5pt;display:flex;align-items:center;height:38px;padding-left:40px;border-radius:8px;color:#A69B85;cursor:pointer;transition:background .12s,color .12s}.ds-nav:hover{background:#1D1A15;color:#F1E9D8}.ds-nav-on,.ds-nav-on:hover{background:#261F11;color:#F6D27E;font-weight:600}"
+    },
+    {
+      "name": "Hairline Ledger",
+      "kind": "card",
+      "refersTo": "",
+      "description": "Count plus inline ledger: Bahnschrift values split by vertical hairlines, no cards.",
+      "html": "<div class=\"ds-ledger\"><div class=\"ds-hero\">1 717<small>baús desde 08/11/2026</small></div><div class=\"ds-col\"><b>30</b><span>hoje</span></div><div class=\"ds-col\"><b>95</b><span>partidas</span></div><div class=\"ds-col\"><b>18,1</b><span>baús por partida</span></div></div>",
+      "css": ".ds-ledger{display:flex;align-items:flex-start;background:#0C0B09;padding:16px 28px;font-family:'Segoe UI Variable Text','Segoe UI',sans-serif}.ds-hero{flex:1;font-family:Bahnschrift,'Segoe UI',sans-serif;font-weight:600;font-size:50pt;line-height:1;color:#E3B04B}.ds-hero small{display:block;font:400 10.5pt 'Segoe UI',sans-serif;color:#A69B85;margin-top:6px}.ds-col{border-left:1px solid #2A251C;padding:4px 16px;min-width:90px}.ds-col b{display:block;font-family:Bahnschrift,'Segoe UI',sans-serif;font-weight:600;font-size:22pt;color:#F1E9D8}.ds-col span{font-size:8.5pt;color:#A69B85}"
+    },
+    {
+      "name": "Loot Strip",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Signature: match timeline, one diamond per opening coloured by kind; hollow for extras.",
+      "html": "<div class=\"ds-strip\"><i style=\"left:30%\"></i><i style=\"left:33%\"></i><i class=\"ds-rare\" style=\"left:45%\"></i><i class=\"ds-hollow\" style=\"left:60%\"></i><i style=\"left:82%\"></i><span>0 min</span></div>",
+      "css": ".ds-strip{position:relative;height:56px;background:#0C0B09;padding:0 8px}.ds-strip:before{content:'';position:absolute;left:0;right:0;top:24px;border-top:1px solid #2A251C}.ds-strip i{position:absolute;top:19px;width:9px;height:9px;background:#E3B04B;transform:rotate(45deg);transition:background .12s}.ds-strip i:hover{background:#F6D27E}.ds-strip i.ds-rare{background:#D6A0FF}.ds-strip i.ds-hollow{background:none;border:1.2px solid #8A806C;width:7px;height:7px}.ds-strip span{position:absolute;left:0;top:38px;font:8.5pt 'Segoe UI',sans-serif;color:#8A806C}"
+    },
+    {
+      "name": "Table Row",
+      "kind": "custom",
+      "refersTo": "ledger-row",
+      "description": "Owner-drawn list rows.",
+      "html": "<div class=\"ds-table\"><div class=\"ds-th\">Partida</div><div class=\"ds-tr\">15/11 12:36 · Esquadrões</div><div class=\"ds-tr ds-tr-on\">15/11 12:10 · Esquadrões</div></div>",
+      "css": ".ds-table{background:#0C0B09;font-family:'Segoe UI Variable Text','Segoe UI',sans-serif}.ds-th{font-size:8.5pt;color:#8A806C;padding:6px 10px;border-bottom:1px solid #2A251C}.ds-tr{font-size:9.5pt;color:#F1E9D8;height:30px;line-height:30px;padding:0 10px;border-bottom:1px solid #1A1712}.ds-tr:hover{background:#1D1A15}.ds-tr-on,.ds-tr-on:hover{background:#261F11;color:#F6D27E}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Loot Ledger",
+    "overview": "A warm-black ledger in which gold is the only voice. The chest count leads every view in large condensed numerals; everything else is quiet, tinted context drawn on one flat ground and divided by hairlines rather than boxed into cards. The signature device is the loot strip: a match drawn as a timeline with one gold diamond per chest.\n\nThe app is native WinForms painted by hand in GDI+ (DPI mode DpiUnawareGdiScaled, so sizes below are authored at 96 DPI and scaled by the system). Density is compact on purpose: it sits beside a game and must not steal space or attention. Motion is short and eased (ease-out expo): the count rolls up, bars grow, hover fades in.",
+    "keyCharacteristics": [
+      "One flat warm-black ground; depth by tone (rail, surface, hover), never shadow.",
+      "Gold carries selection, the count, the primary action and the chest marks, nothing else.",
+      "Numerals in Bahnschrift, UI in Segoe UI Variable.",
+      "Hairline dividers (1px Line) instead of cards.",
+      "Rounded corners only on interactive controls."
+    ],
+    "rules": [
+      {
+        "name": "The One Gold Rule",
+        "body": "Gold means \"this is the count, the chosen thing, or the action\". Never use it for decoration, borders at rest, or icons in idle state.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tinted Neutral Rule",
+        "body": "Every neutral leans warm toward the gold; pure greys are not in the system.",
+        "section": "colors"
+      },
+      {
+        "name": "The Text Floor Rule",
+        "body": "Text uses Text, Muted or Faint. Faint is the lowest text tier; Dim and Line are never text colours.",
+        "section": "colors"
+      },
+      {
+        "name": "The Numbers Are Bahnschrift Rule",
+        "body": "Every count, average or score is set in Bahnschrift; never in Segoe UI.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Ledger Rule",
+        "body": "Group content with hairlines and spacing; never with drop shadows or boxed cards.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do lead every view with the number in Bahnschrift, gold only for the headline count.",
+      "Do separate groups with 1px Line hairlines and the 28px gutter.",
+      "Do show selection as Gold Wash fill plus Lit Gold text.",
+      "Do colour non-plain openings by Fortnite rarity (rare purple, relic blue, buried bronze, poster green) and keep plain chests gold.",
+      "Do ease animations out (exponential) and skip them when Windows UI effects are off."
+    ],
+    "donts": [
+      "Don't build grids of equal stat cards with icon tiles; use the inline hairline ledger.",
+      "Don't add drop shadows or raised cards.",
+      "Don't round non-interactive containers.",
+      "Don't use pure greys, or Dim/Line for any text.",
+      "Don't spend gold on decoration or idle icons."
+    ]
+  }
+}
