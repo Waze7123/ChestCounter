@@ -289,16 +289,14 @@ internal sealed class MainForm : Form
                 {
                     ShowPage(i);
                     await Task.Delay(900);
-                    using var bmp = new Bitmap(Width, Height);
-                    DrawToBitmap(bmp, new Rectangle(0, 0, Width, Height));
+                    using var bmp = Snapshot();
                     bmp.Save(Path.Combine(folder, $"{i + 1}-{_pages[i].Title}.png"), System.Drawing.Imaging.ImageFormat.Png);
                     if (_pages[i].AutoScroll)
                     {
                         // Página com deslocamento: captura também o fundo.
                         _pages[i].AutoScrollPosition = new Point(0, 5000);
                         await Task.Delay(400);
-                        using var bottom = new Bitmap(Width, Height);
-                        DrawToBitmap(bottom, new Rectangle(0, 0, Width, Height));
+                        using var bottom = Snapshot();
                         bottom.Save(Path.Combine(folder, $"{i + 1}b-{_pages[i].Title}.png"), System.Drawing.Imaging.ImageFormat.Png);
                     }
                 }
@@ -312,5 +310,36 @@ internal sealed class MainForm : Form
             });
         }
         _state.Scanner.ScanFinished += Capture;
+    }
+
+    /// <summary>
+    /// Imagem da janela como aparece no Windows: o DrawToBitmap desenha a moldura clássica (clara), por isso
+    /// usa-se só a área da app e desenha-se por cima a barra de título escura que a app pede ao Windows.
+    /// </summary>
+    private Bitmap Snapshot()
+    {
+        using var full = new Bitmap(Width, Height);
+        DrawToBitmap(full, new Rectangle(0, 0, Width, Height));
+        var origin = PointToScreen(Point.Empty);
+        var client = new Rectangle(origin.X - Left, origin.Y - Top, ClientSize.Width, ClientSize.Height);
+
+        const int bar = 32;
+        var shot = new Bitmap(client.Width + 2, client.Height + bar + 1);
+        using var g = Graphics.FromImage(shot);
+        Theme.HighQuality(g);
+        g.Clear(Theme.Rail);
+        g.DrawImage(full, new Rectangle(1, bar, client.Width, client.Height), client, GraphicsUnit.Pixel);
+        using (var ico = new Icon(Icon, 16, 16)) g.DrawIcon(ico, 10, (bar - 16) / 2);
+        Theme.Text_(g, Text, Theme.Body, Theme.Muted, new Rectangle(34, 0, 400, bar));
+        // Botões de minimizar, maximizar e fechar, discretos como no tema escuro do Windows.
+        using var pen = new Pen(Theme.Muted, 1);
+        var x = shot.Width - 46 * 3;
+        g.DrawLine(pen, x + 18, bar / 2, x + 28, bar / 2);
+        g.DrawRectangle(pen, x + 46 + 18, bar / 2 - 5, 10, 10);
+        g.DrawLine(pen, x + 92 + 18, bar / 2 - 5, x + 92 + 28, bar / 2 + 5);
+        g.DrawLine(pen, x + 92 + 28, bar / 2 - 5, x + 92 + 18, bar / 2 + 5);
+        using var border = new Pen(Theme.Line);
+        g.DrawRectangle(border, 0, 0, shot.Width - 1, shot.Height - 1);
+        return shot;
     }
 }
