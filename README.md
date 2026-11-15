@@ -8,7 +8,7 @@
 
 English · [Português](LEIA-ME.md)
 
-<img src="docs/screenshots/dashboard.png" alt="Dashboard" width="760">
+<img src="docs/screenshots/dashboard-dark.png" alt="Dashboard" width="760">
 
 </div>
 
@@ -29,8 +29,8 @@ ChestCounter reads the `.replay` files Fortnite saves for every match and counts
 - **5 languages** — Português, English, Español, Français, Deutsch. The name follows the language (Contador de Baús, Chest Counter, Contador de Cofres, Compteur de Coffres, Truhenzähler).
 
 <p align="center">
-  <img src="docs/screenshots/modes.png" alt="Modes" width="49%">
-  <img src="docs/screenshots/settings.png" alt="Settings" width="49%">
+  <img src="docs/screenshots/modes-dark.png" alt="Modes" width="49%">
+  <img src="docs/screenshots/settings-dark.png" alt="Settings" width="49%">
 </p>
 <p align="center">
   <img src="docs/screenshots/language.png" alt="First launch: language" width="49%">
