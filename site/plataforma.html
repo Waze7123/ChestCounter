@@ -46,6 +46,14 @@
   .err{color:var(--danger);font-size:13px;margin-top:8px}
   .ok{color:var(--accent);font-size:13px;margin-top:8px}
   .info{background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:12px;font-size:13px;color:var(--muted);margin:10px 0}
+  .tut{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0}
+  .tut h3{font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--accent);margin-bottom:10px}
+  .tut ol{margin:0 0 0 18px;font-size:14px}
+  .tut li{margin-bottom:9px}
+  .tut code{background:var(--bg);padding:2px 6px;border-radius:4px;font-size:12px}
+  table.mini{width:100%;border-collapse:collapse;margin:8px 0}
+  table.mini td{border:1px solid var(--line);padding:6px 9px;font-size:13px}
+  table.mini td:first-child{color:var(--muted);width:120px}
   /* contract preview */
   #contractDoc{background:#fff;color:#1a1a1a;border-radius:9px;padding:30px;font-size:12.5px;line-height:1.55;max-height:340px;overflow:auto}
   #contractDoc h4{font-size:15px;text-align:center;margin-bottom:10px}
@@ -208,14 +216,44 @@ function viewVerify(){
        <div class="tab" id="mFile" onclick="vmethod('file')">Ficheiro no servidor</div>
      </div>
      <div id="vDns">
-       <p class="muted">Adiciona este registo <b>TXT</b> no DNS do domínio <b>${host}</b>:</p>
-       <div class="token">TXT &nbsp; @ &nbsp; "${draft.vtoken}"</div>
-       <p class="note">No teu fornecedor de domínio (ex: GoDaddy, PTisp), vai a Gestão de DNS → Adicionar registo TXT.</p>
+       <p class="muted">Copia este código e adiciona-o como registo <b>TXT</b> no DNS de <b>${host}</b>:</p>
+       <div class="token" id="tokDns">${draft.vtoken}</div>
+       <button class="btn sec sm" onclick="copyTok('${draft.vtoken}')">📋 Copiar código</button>
+       <div class="tut">
+         <h3>Como fazer (passo a passo)</h3>
+         <ol>
+           <li>Entra no <b>site onde registaste o domínio</b> (onde pagas o <b>${host}</b> — ex: GoDaddy, PTisp, Amen, Cloudflare, OVH).</li>
+           <li>Procura a secção <b>"DNS"</b>, <b>"Gestão de DNS"</b> ou <b>"Zona DNS"</b>.</li>
+           <li>Clica em <b>"Adicionar registo"</b> e preenche:
+             <table class="mini">
+               <tr><td>Tipo</td><td><b>TXT</b></td></tr>
+               <tr><td>Nome / Host</td><td><b>@</b> &nbsp;(ou deixa vazio = o domínio principal)</td></tr>
+               <tr><td>Valor / Conteúdo</td><td>o código copiado acima</td></tr>
+               <tr><td>TTL</td><td>deixa o valor por defeito</td></tr>
+             </table>
+           </li>
+           <li><b>Guarda.</b> Pode demorar de alguns minutos até algumas horas a ficar ativo.</li>
+           <li>Volta aqui e clica em <b>"Verificar posse"</b>.</li>
+         </ol>
+         <p class="note">💡 Não sabes onde está o domínio? Vê no teu email por uma fatura de "renovação de domínio". O remetente é o teu fornecedor.</p>
+       </div>
      </div>
      <div id="vFile" class="hidden">
-       <p class="muted">Cria um ficheiro com este nome na raiz do site, acessível em:</p>
-       <div class="token">https://${host}/${draft.vtoken}.txt</div>
-       <p class="note">O conteúdo do ficheiro pode ser o próprio código.</p>
+       <p class="muted">Cria um ficheiro de texto com este nome e coloca-o na raiz do teu site:</p>
+       <div class="token" id="tokFile">${draft.vtoken}.txt</div>
+       <button class="btn sec sm" onclick="copyTok('${draft.vtoken}.txt')">📋 Copiar nome</button>
+       <div class="tut">
+         <h3>Como fazer (passo a passo)</h3>
+         <ol>
+           <li>No teu computador, cria um ficheiro de texto chamado <b>${draft.vtoken}.txt</b>.</li>
+           <li>Dentro do ficheiro, escreve o código: <b>${draft.vtoken}</b> e guarda.</li>
+           <li>Acede ao teu site por <b>gestor de ficheiros</b> (cPanel, Plesk) ou por <b>FTP</b> (ex: FileZilla) — é onde estão os ficheiros do site.</li>
+           <li>Coloca o ficheiro na <b>pasta raiz</b> do site (normalmente <code>public_html</code> ou <code>www</code>).</li>
+           <li>Confirma no browser que abre: <b>https://${host}/${draft.vtoken}.txt</b></li>
+           <li>Volta aqui e clica em <b>"Verificar posse"</b>.</li>
+         </ol>
+         <p class="note">💡 Se o teu site é feito em WordPress/Wix/Shopify e não tens acesso a ficheiros, usa antes o método <b>Registo DNS</b>.</p>
+       </div>
      </div>
      <div class="info">🔎 Na versão final, o sistema verifica isto automaticamente. Neste protótipo, clica para simular a verificação.</div>
      <div style="display:flex;gap:10px">
@@ -225,6 +263,7 @@ function viewVerify(){
      <div class="ok hidden" id="vOk">✓ Posse confirmada! A redirecionar para o contrato…</div>
    </div>`;
 }
+function copyTok(t){ navigator.clipboard?.writeText(t); }
 function vmethod(m){
   $('#mDns').classList.toggle('on',m==='dns');$('#mFile').classList.toggle('on',m==='file');
   $('#vDns').classList.toggle('hidden',m!=='dns');$('#vFile').classList.toggle('hidden',m!=='file');
