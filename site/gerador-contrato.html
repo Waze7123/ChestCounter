@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fortify — Gerador de Contrato de Autorização</title>
+<style>
+  :root{--bg:#0b0f1a;--card:#151d30;--line:#223049;--txt:#e7ecf5;--muted:#9aa7bd;--accent:#3ddc97;--radius:12px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.5}
+  .wrap{max-width:1200px;margin:0 auto;padding:24px 20px}
+  h1{font-size:24px;display:flex;align-items:center;gap:10px}
+  .dot{width:12px;height:12px;border-radius:3px;background:var(--accent);box-shadow:0 0 14px var(--accent)}
+  .muted{color:var(--muted);font-size:14px;margin-top:4px}
+  .layout{display:grid;grid-template-columns:380px 1fr;gap:24px;margin-top:24px}
+  @media(max-width:900px){.layout{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+  .panel h2{font-size:15px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:14px}
+  .field{margin-bottom:12px}
+  label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+  input,textarea,select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px;color:var(--txt);font-size:14px;font-family:inherit}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent)}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btn{display:inline-block;width:100%;background:var(--accent);color:#05231a;font-weight:700;border:none;padding:13px;border-radius:999px;font-size:15px;cursor:pointer;margin-top:8px}
+  .btn.sec{background:transparent;color:var(--txt);border:1px solid var(--line)}
+  .saved{font-size:12px;color:var(--accent);margin-top:6px;display:none}
+  .chk{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:14px;color:var(--txt)}
+  .chk input{width:auto}
+  .note{font-size:12px;color:var(--muted);margin-top:10px}
+
+  /* PREVIEW / CONTRATO */
+  #doc{background:#fff;color:#1a1a1a;border-radius:var(--radius);padding:48px;font-size:13.5px;line-height:1.6}
+  #doc h2.t{font-size:20px;text-align:center;margin-bottom:4px;color:#000}
+  #doc .st{text-align:center;color:#555;font-size:12px;margin-bottom:20px}
+  #doc h3{font-size:14px;margin:18px 0 8px;border-bottom:2px solid #eee;padding-bottom:4px;color:#000}
+  #doc p{margin:6px 0}
+  #doc table{width:100%;border-collapse:collapse;margin:8px 0}
+  #doc th,#doc td{border:1px solid #ccc;padding:6px 8px;text-align:left;font-size:12.5px}
+  #doc .val{font-weight:600}
+  #doc ul{margin:6px 0 6px 20px}
+  #doc .sign{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px}
+  #doc .sign .line{border-top:1px solid #000;margin-top:40px;padding-top:4px;font-size:12px}
+  #doc .warn{background:#fff8e1;border:1px solid #f0d890;padding:10px;border-radius:6px;font-size:12px;margin-top:20px;color:#5a4a00}
+  @media print{
+    body{background:#fff}
+    .wrap{padding:0;max-width:100%}
+    .noprint{display:none!important}
+    .layout{display:block}
+    #doc{border-radius:0;padding:0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="noprint">
+    <h1><span class="dot"></span> Fortify — Gerador de Contrato</h1>
+    <p class="muted">Preenche os dados, gera o contrato e imprime ou guarda em PDF. Os teus dados ficam guardados neste navegador.</p>
+  </div>
+
+  <div class="layout">
+    <!-- FORM -->
+    <div class="noprint">
+      <div class="panel">
+        <h2>Os teus dados (Prestador)</h2>
+        <p class="note" style="margin-top:-6px;margin-bottom:12px">Preenche uma vez — fica guardado para os próximos contratos.</p>
+        <div class="field"><label>Nome / Empresa</label><input id="p_nome" placeholder="Fortify / O teu nome"></div>
+        <div class="row">
+          <div class="field"><label>NIF</label><input id="p_nif"></div>
+          <div class="field"><label>Telefone</label><input id="p_tel"></div>
+        </div>
+        <div class="field"><label>Email</label><input id="p_email"></div>
+        <div class="field"><label>Morada</label><input id="p_morada"></div>
+        <button class="btn sec" onclick="saveMe()">Guardar os meus dados</button>
+        <div class="saved" id="savedMsg">✓ Dados guardados neste navegador</div>
+      </div>
+
+      <div class="panel" style="margin-top:16px">
+        <h2>Dados do Cliente</h2>
+        <div class="field"><label>Nome / Empresa</label><input id="c_nome" oninput="render()" placeholder="Empresa do cliente"></div>
+        <div class="row">
+          <div class="field"><label>NIF</label><input id="c_nif" oninput="render()"></div>
+          <div class="field"><label>Representante</label><input id="c_rep" oninput="render()"></div>
+        </div>
+        <div class="field"><label>Email / Telefone</label><input id="c_contacto" oninput="render()"></div>
+        <div class="field"><label>Morada</label><input id="c_morada" oninput="render()"></div>
+      </div>
+
+      <div class="panel" style="margin-top:16px">
+        <h2>Âmbito e Testes</h2>
+        <div class="field"><label>Alvos autorizados (um por linha: domínio/IP)</label><textarea id="alvos" rows="3" oninput="render()" placeholder="exemplo.pt&#10;www.exemplo.pt"></textarea></div>
+        <div class="field"><label>Alvos excluídos (opcional)</label><textarea id="excl" rows="2" oninput="render()" placeholder="loja.exemplo.pt (fora do âmbito)"></textarea></div>
+        <label>Tipos de teste autorizados:</label>
+        <div class="chk"><input type="checkbox" id="t_passiva" checked onchange="render()"><span>Análise passiva (cabeçalhos, SSL, ficheiros expostos)</span></div>
+        <div class="chk"><input type="checkbox" id="t_recon" checked onchange="render()"><span>Reconhecimento (subdomínios, portas)</span></div>
+        <div class="chk"><input type="checkbox" id="t_ativo" onchange="render()"><span>Testes ativos OWASP Top 10 (SQLi, XSS, etc.)</span></div>
+        <div class="chk"><input type="checkbox" id="t_cred" onchange="render()"><span>Teste de credenciais fracas (sem bloquear contas)</span></div>
+      </div>
+
+      <div class="panel" style="margin-top:16px">
+        <h2>Datas, Ambiente e Valor</h2>
+        <div class="field">
+          <label>Ambiente</label>
+          <select id="ambiente" onchange="render()"><option>Produção</option><option>Testes/Homologação</option></select>
+        </div>
+        <div class="row">
+          <div class="field"><label>Início dos testes</label><input type="datetime-local" id="inicio" oninput="render()"></div>
+          <div class="field"><label>Fim dos testes</label><input type="datetime-local" id="fim" oninput="render()"></div>
+        </div>
+        <div class="field"><label>Contacto de emergência do cliente</label><input id="emerg" oninput="render()" placeholder="Nome + telefone"></div>
+        <div class="row">
+          <div class="field"><label>Serviço</label><input id="servico" oninput="render()" placeholder="Auditoria Completa"></div>
+          <div class="field"><label>Valor (€)</label><input id="valor" oninput="render()" placeholder="60"></div>
+        </div>
+        <div class="field"><label>Prazo de entrega do relatório (dias úteis)</label><input id="prazo" oninput="render()" placeholder="5"></div>
+      </div>
+
+      <button class="btn" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+      <p class="note">Dica: no diálogo de impressão, escolhe "Guardar como PDF".</p>
+    </div>
+
+    <!-- CONTRATO -->
+    <div id="doc"></div>
+  </div>
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  const line = v => v && v.trim() ? '<span class="val">'+esc(v)+'</span>' : '<span style="color:#aaa">__________________</span>';
+  const fdate = v => { if(!v) return '____/____/______ às __:__'; const d=new Date(v); return d.toLocaleDateString('pt-PT')+' às '+d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'}); };
+
+  function saveMe(){
+    const me={nome:$('p_nome').value,nif:$('p_nif').value,tel:$('p_tel').value,email:$('p_email').value,morada:$('p_morada').value};
+    localStorage.setItem('fortify_prestador',JSON.stringify(me));
+    const m=$('savedMsg'); m.style.display='block'; setTimeout(()=>m.style.display='none',2500);
+    render();
+  }
+  function loadMe(){
+    const raw=localStorage.getItem('fortify_prestador'); if(!raw) return;
+    const me=JSON.parse(raw);
+    $('p_nome').value=me.nome||'';$('p_nif').value=me.nif||'';$('p_tel').value=me.tel||'';$('p_email').value=me.email||'';$('p_morada').value=me.morada||'';
+  }
+
+  function testsList(){
+    const t=[];
+    if($('t_passiva').checked) t.push('Análise passiva (cabeçalhos HTTP, SSL/TLS, ficheiros expostos, deteção de versões/CVEs)');
+    if($('t_recon').checked) t.push('Reconhecimento (mapeamento de subdomínios, portas e serviços)');
+    if($('t_ativo').checked) t.push('Testes ativos OWASP Top 10 (SQL Injection, XSS, autenticação, controlo de acessos, CSRF)');
+    if($('t_cred').checked) t.push('Teste de credenciais fracas, sem bloqueio de contas');
+    return t.length? '<ul>'+t.map(x=>'<li>'+x+'</li>').join('')+'</ul>' : '<p style="color:#aaa">(nenhum selecionado)</p>';
+  }
+  function targets(id){
+    const v=$(id).value.split('\n').map(s=>s.trim()).filter(Boolean);
+    if(!v.length) return '<tr><td style="color:#aaa">__________________</td></tr>';
+    return v.map(x=>'<tr><td>'+esc(x)+'</td></tr>').join('');
+  }
+
+  function render(){
+    const d=new Date().toLocaleDateString('pt-PT');
+    $('doc').innerHTML = `
+      <h2 class="t">CONTRATO DE AUTORIZAÇÃO PARA TESTES DE SEGURANÇA</h2>
+      <div class="st">Autorização de Auditoria / Teste de Intrusão — Fortify</div>
+
+      <h3>1. Partes</h3>
+      <p><b>PRESTADOR:</b> ${line($('p_nome').value)} — NIF ${line($('p_nif').value)}</p>
+      <p>Morada: ${line($('p_morada').value)} · Contacto: ${line($('p_email').value)} ${$('p_tel').value?' / '+esc($('p_tel').value):''}</p>
+      <p style="margin-top:8px"><b>CLIENTE:</b> ${line($('c_nome').value)} — NIF ${line($('c_nif').value)}</p>
+      <p>Representante: ${line($('c_rep').value)} · Morada: ${line($('c_morada').value)} · Contacto: ${line($('c_contacto').value)}</p>
+
+      <h3>2. Declaração de Propriedade</h3>
+      <p>O CLIENTE declara, sob compromisso de honra, ser o legítimo proprietário dos sistemas indicados no ponto 3, ou ter autoridade legal para autorizar testes sobre os mesmos, e que todas as informações prestadas são verdadeiras. Caso os sistemas estejam alojados em terceiros, o CLIENTE é responsável por obter autorizações adicionais exigidas por esses fornecedores.</p>
+
+      <h3>3. Âmbito dos Testes (Scope)</h3>
+      <p><b>3.1. Alvos AUTORIZADOS:</b></p>
+      <table><thead><tr><th>Domínio / Subdomínio / IP</th></tr></thead><tbody>${targets('alvos')}</tbody></table>
+      <p style="margin-top:8px"><b>3.2. Alvos EXCLUÍDOS:</b></p>
+      <table><tbody>${targets('excl')}</tbody></table>
+      <p style="font-size:12px;color:#555">Tudo o que não constar no ponto 3.1 está fora do âmbito e não será testado.</p>
+
+      <h3>4. Testes Autorizados</h3>
+      ${testsList()}
+      <p style="margin-top:6px"><b>Testes proibidos:</b> negação de serviço (DoS/DDoS); qualquer ação que apague, altere ou corrompa dados; engenharia social (salvo acordo escrito); acesso ou divulgação de dados pessoais além do necessário para provar uma vulnerabilidade.</p>
+
+      <h3>5. Ambiente e Janela Temporal</h3>
+      <p>Ambiente: <span class="val">${esc($('ambiente').value)}</span></p>
+      <p>Início: <span class="val">${fdate($('inicio').value)}</span> &nbsp; Fim: <span class="val">${fdate($('fim').value)}</span></p>
+      <p>Contacto de emergência do CLIENTE (disponível durante os testes): ${line($('emerg').value)}</p>
+
+      <h3>6. Confidencialidade e RGPD</h3>
+      <p>O PRESTADOR trata todas as informações e vulnerabilidades como estritamente confidenciais, não as divulga a terceiros e entrega o relatório apenas ao CLIENTE. Ambas as partes cumprem o RGPD; havendo acesso a dados pessoais, o PRESTADOR atua como subcontratante, tratando-os apenas para a finalidade da auditoria e segundo as instruções do CLIENTE. Os dados recolhidos são eliminados após a entrega do relatório, salvo obrigação legal.</p>
+
+      <h3>7. Responsabilidade</h3>
+      <p>Os testes envolvem algum risco. O CLIENTE declara estar ciente e deve ter backups atualizados antes do início. O PRESTADOR age com diligência profissional, evitando testes destrutivos, e não se responsabiliza por falhas pré-existentes. A auditoria reflete o estado de segurança à data dos testes.</p>
+
+      <h3>8. Entregáveis, Valor e Revogação</h3>
+      <p>Serviço: ${line($('servico').value)} · Valor: <span class="val">${$('valor').value?esc($('valor').value)+' €':'________ €'}</span></p>
+      <p>O PRESTADOR entrega um relatório com vulnerabilidades, gravidade, evidências e recomendações de correção, no prazo de <span class="val">${$('prazo').value?esc($('prazo').value):'____'}</span> dias úteis após o fim dos testes.</p>
+      <p>O CLIENTE pode revogar esta autorização por escrito a qualquer momento, cessando o PRESTADOR os testes de imediato. Aplica-se a lei portuguesa.</p>
+
+      <div class="sign">
+        <div><div class="line">O PRESTADOR — ${esc($('p_nome').value||'')}</div></div>
+        <div><div class="line">O CLIENTE — ${esc($('c_nome').value||'')}</div></div>
+      </div>
+      <p style="margin-top:24px">Local e data: __________________________, ${d}</p>
+
+      <div class="warn">⚠️ Modelo de base para auditorias a PME. Para contratos de maior valor, recomenda-se revisão por advogado. Não substitui aconselhamento jurídico.</div>
+    `;
+  }
+
+  loadMe(); render();
+</script>
+</body>
+</html>
