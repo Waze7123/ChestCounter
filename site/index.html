@@ -3,127 +3,154 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fortify — A segurança do teu site, verificada</title>
-<meta name="description" content="Descobrimos as fragilidades do teu site antes dos criminosos. Auditoria com autorização, verificação de domínio e um relatório claro para corrigir. Para PME em Portugal.">
+<title>Fortify — Segurança para o site da tua empresa</title>
+<meta name="description" content="Fortify analisa o site da tua empresa, encontra as fragilidades antes dos criminosos e entrega um relatório claro para as corrigir. Com autorização verificada e conforme o RGPD.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#0b1b31; --ink2:#0e2039; --surface:#122844; --surface2:#16314f;
-    --line:#22395a; --txt:#eef3f9; --muted:#93a7c4; --gold:#f2b63c; --gold-d:#caa23a;
-    --verified:#35c08a; --danger:#ff7a6b; --warn:#ffc155;
-    --maxw:1120px;
+    --paper:#ffffff; --bg:#f4f6f8; --ink:#0c1a28; --ink-soft:#2f4257; --muted:#6a7c8e;
+    --line:#e6ebf0; --line-strong:#d4dce4;
+    --accent:#0f7a52; --accent-ink:#0a5a3d; --accent-wash:#e9f4ef;
+    --danger:#d6453c; --warn:#bd8111;
+    --maxw:1140px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{background:var(--ink);color:var(--txt);font-family:"Inter",system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+  body{background:var(--paper);color:var(--ink);font-family:"Inter",system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;font-feature-settings:"cv05","ss01"}
   a{color:inherit;text-decoration:none}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-  h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:600;line-height:1.08;letter-spacing:-.01em}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:"Inter";font-weight:600;font-size:15px;padding:13px 24px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:transform .14s ease,background .14s ease}
-  .btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-  .btn-gold{background:var(--gold);color:#241a02}
-  .btn-gold:hover{transform:translateY(-2px);background:#ffc24d}
-  .btn-ghost{background:transparent;color:var(--txt);border-color:var(--line)}
-  .btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  h1,h2,h3,.wm{font-family:"Schibsted Grotesk",system-ui,sans-serif;letter-spacing:-.02em;font-weight:700;line-height:1.05;color:var(--ink)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:"Inter";font-weight:600;font-size:15px;padding:12px 22px;border-radius:9px;border:1px solid transparent;cursor:pointer;transition:background .14s,border-color .14s,color .14s}
+  .btn:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px}
+  .btn-primary{background:var(--ink);color:#fff}
+  .btn-primary:hover{background:#17293a}
+  .btn-outline{background:#fff;color:var(--ink);border-color:var(--line-strong)}
+  .btn-outline:hover{border-color:var(--ink);}
 
-  /* HEADER */
-  header{position:sticky;top:0;z-index:50;background:rgba(11,27,49,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-  nav{display:flex;align-items:center;justify-content:space-between;height:72px}
-  .brand{display:flex;align-items:center;gap:11px;font-family:"Fraunces";font-weight:600;font-size:22px}
-  .crest{width:30px;height:30px;flex:0 0 auto}
-  .navlinks{display:flex;gap:30px;align-items:center}
-  .navlinks a{color:var(--muted);font-size:15px;font-weight:500}
-  .navlinks a:hover{color:var(--txt)}
-  @media(max-width:820px){.navlinks a.nl{display:none}}
+  /* NAV */
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:saturate(1.3) blur(10px);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .wm{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700}
+  .wm svg{display:block}
+  .nav-r{display:flex;align-items:center;gap:26px}
+  .nav-r a.nl{color:var(--ink-soft);font-size:14.5px;font-weight:500}
+  .nav-r a.nl:hover{color:var(--ink)}
+  @media(max-width:840px){.nav-r a.nl{display:none}}
 
   /* HERO */
-  .hero{padding:84px 0 72px;position:relative}
-  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
-  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:44px}}
-  .seal-tag{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:var(--gold);border:1px solid var(--gold-d);background:rgba(242,182,60,.07);padding:7px 14px;border-radius:999px;margin-bottom:26px}
-  .seal-tag .d{width:7px;height:7px;border-radius:50%;background:var(--verified);box-shadow:0 0 10px var(--verified)}
-  h1{font-size:clamp(38px,6vw,62px)}
-  .hero p.lead{color:var(--muted);font-size:clamp(17px,2.1vw,20px);margin:24px 0 34px;max-width:30em}
-  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
-  .reassure{margin-top:30px;display:flex;flex-direction:column;gap:9px}
-  .reassure div{display:flex;align-items:center;gap:11px;color:var(--muted);font-size:15px}
-  .reassure .ok{color:var(--verified);flex:0 0 auto}
+  .hero{padding:76px 0 40px}
+  .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:60px;align-items:center}
+  @media(max-width:920px){.hero-grid{grid-template-columns:1fr;gap:46px}}
+  .pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--accent-ink);background:var(--accent-wash);border:1px solid #cfe7dc;padding:6px 13px;border-radius:999px;margin-bottom:24px}
+  .pill svg{display:block}
+  h1{font-size:clamp(36px,5.4vw,56px);font-weight:800;letter-spacing:-.03em}
+  .hero .sub{color:var(--ink-soft);font-size:clamp(17px,2vw,20px);margin:22px 0 32px;max-width:31em}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .microtrust{margin-top:26px;display:flex;gap:22px;flex-wrap:wrap;color:var(--muted);font-size:13.5px}
+  .microtrust span{display:inline-flex;align-items:center;gap:7px}
+  .microtrust .c{color:var(--accent)}
 
-  /* HERO REPORT CARD */
-  .report{background:linear-gradient(170deg,var(--surface),var(--ink2));border:1px solid var(--line);border-radius:18px;padding:26px;position:relative;box-shadow:0 30px 70px -30px rgba(0,0,0,.7)}
-  .report .rhead{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--line)}
-  .report .site{font-family:"Fraunces";font-size:18px;font-weight:600}
-  .vbadge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--verified);background:rgba(53,192,138,.12);border:1px solid rgba(53,192,138,.35);padding:5px 11px;border-radius:999px}
-  .finding{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid rgba(34,57,90,.6)}
-  .finding:last-child{border-bottom:none}
-  .sev{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
-  .sev.high{background:var(--danger);box-shadow:0 0 10px rgba(255,122,107,.6)}
-  .sev.med{background:var(--warn)}
-  .sev.low{background:var(--muted)}
-  .finding .ft{flex:1;font-size:14.5px}
-  .finding .fs{font-size:12px;color:var(--muted)}
-  .stamp{position:absolute;right:-16px;top:-16px;width:92px;height:92px;transform:rotate(9deg)}
-  @media(max-width:460px){.stamp{width:72px;height:72px;right:-6px;top:-10px}}
+  /* REPORT MOCK */
+  .mock{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:0 1px 2px rgba(12,26,40,.04),0 24px 48px -24px rgba(12,26,40,.22);overflow:hidden}
+  .mock-top{display:flex;align-items:center;gap:8px;padding:13px 18px;border-bottom:1px solid var(--line);background:#fbfcfd}
+  .mock-top .dots{display:flex;gap:6px}
+  .mock-top .dots i{width:10px;height:10px;border-radius:50%;background:#dfe5ec;display:block}
+  .mock-top .u{margin-left:10px;font-size:12.5px;color:var(--muted);font-family:"Inter"}
+  .mock-body{padding:22px}
+  .mock-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .mock-head .d{font-family:"Schibsted Grotesk";font-weight:600;font-size:17px}
+  .chip-ok{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--accent-ink);background:var(--accent-wash);border:1px solid #cfe7dc;padding:4px 10px;border-radius:999px}
+  .grade{display:flex;align-items:center;gap:16px;padding:14px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:#fbfcfd}
+  .ring{width:58px;height:58px;flex:0 0 auto}
+  .grade .gt{font-size:13px;color:var(--muted)}
+  .grade .gn{font-family:"Schibsted Grotesk";font-weight:700;font-size:20px;color:var(--ink)}
+  .rrow{display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid var(--line)}
+  .rrow:last-child{border-bottom:none}
+  .sev{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;flex:0 0 auto;min-width:58px;text-align:center}
+  .sev.h{color:#fff;background:var(--danger)}
+  .sev.m{color:#5a3f05;background:#f5e2b8}
+  .sev.l{color:var(--ink-soft);background:#eef1f5}
+  .rrow .rt{flex:1;font-size:14px}
+  .rrow .fix{font-size:12.5px;color:var(--accent);font-weight:600}
 
-  /* SECTION */
-  section{padding:76px 0}
-  .shead{max-width:36em}
-  .kicker{font-size:14px;font-weight:600;color:var(--gold);margin-bottom:12px}
-  h2{font-size:clamp(28px,4vw,42px)}
-  .shead p{color:var(--muted);font-size:18px;margin-top:14px}
+  /* INDUSTRIES STRIP */
+  .strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg)}
+  .strip .wrap{display:flex;align-items:center;gap:30px;flex-wrap:wrap;padding:20px 28px}
+  .strip .lbl{font-size:13px;color:var(--muted)}
+  .strip .items{display:flex;gap:26px;flex-wrap:wrap;color:var(--ink-soft);font-weight:500;font-size:14.5px}
+  .strip .items span{display:inline-flex;align-items:center;gap:8px}
 
-  /* THREATS — structured list, not identical cards */
-  .threats{margin-top:46px;display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
-  @media(max-width:760px){.threats{grid-template-columns:1fr}}
-  .threat{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:22px 0;border-top:1px solid var(--line)}
-  .threat .ic{width:40px;height:40px;border-radius:9px;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center}
-  .threat h3{font-family:"Inter";font-weight:600;font-size:16.5px;margin-bottom:5px}
-  .threat p{color:var(--muted);font-size:14.5px}
+  /* SECTIONS */
+  section{padding:84px 0}
+  h2{font-size:clamp(27px,3.6vw,38px);font-weight:700;max-width:16em}
+  .lede{color:var(--ink-soft);font-size:18px;margin-top:14px;max-width:34em}
 
-  /* STEPS — real sequence, numbered is justified */
-  .how{background:var(--ink2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .steps{margin-top:46px;display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
-  @media(max-width:860px){.steps{grid-template-columns:1fr 1fr}}
-  @media(max-width:520px){.steps{grid-template-columns:1fr}}
-  .step .n{font-family:"Fraunces";font-size:34px;font-weight:600;color:var(--gold);line-height:1}
-  .step h3{font-family:"Inter";font-weight:600;font-size:17px;margin:14px 0 6px}
-  .step p{color:var(--muted);font-size:14.5px}
+  /* THREATS */
+  .tg{margin-top:52px;display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  @media(max-width:720px){.tg{grid-template-columns:1fr}}
+  .tcell{background:var(--paper);padding:28px}
+  .tcell .ic{color:var(--accent);margin-bottom:14px}
+  .tcell h3{font-size:17px;font-weight:600;font-family:"Inter";letter-spacing:-.01em;margin-bottom:6px}
+  .tcell p{color:var(--muted);font-size:14.5px}
+
+  /* HOW */
+  .how{background:var(--bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .hsteps{margin-top:52px;display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
+  @media(max-width:880px){.hsteps{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.hsteps{grid-template-columns:1fr}}
+  .hstep{position:relative}
+  .hstep .n{font-family:"Schibsted Grotesk";font-weight:700;font-size:15px;color:var(--accent);border:1.5px solid #cfe7dc;background:var(--accent-wash);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .hstep h3{font-size:17px;font-weight:600;font-family:"Inter";letter-spacing:-.01em;margin-bottom:6px}
+  .hstep p{color:var(--muted);font-size:14.5px}
 
   /* PRICING */
-  .plans{margin-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start}
-  @media(max-width:860px){.plans{grid-template-columns:1fr}}
-  .plan{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:30px}
-  .plan.feat{background:linear-gradient(175deg,var(--surface2),var(--surface));border-color:var(--gold-d);box-shadow:0 24px 60px -30px rgba(242,182,60,.4);transform:translateY(-8px)}
-  @media(max-width:860px){.plan.feat{transform:none}}
-  .plan .pn{font-family:"Inter";font-weight:600;font-size:15px;color:var(--muted);text-transform:none}
-  .plan .pp{font-family:"Fraunces";font-size:40px;font-weight:600;margin:10px 0 2px}
-  .plan .pp small{font-family:"Inter";font-size:15px;color:var(--muted);font-weight:500}
-  .plan .feat-tag{display:inline-block;font-size:12px;font-weight:700;color:#241a02;background:var(--gold);padding:4px 11px;border-radius:999px;margin-bottom:14px}
-  .plan ul{list-style:none;margin:18px 0 26px}
-  .plan li{display:flex;gap:11px;align-items:flex-start;padding:7px 0;color:var(--muted);font-size:14.5px}
-  .plan li svg{flex:0 0 auto;margin-top:3px;color:var(--verified)}
+  .pg{margin-top:52px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
+  @media(max-width:880px){.pg{grid-template-columns:1fr}}
+  .pc{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:28px}
+  .pc.hl{border-color:var(--ink);box-shadow:0 20px 50px -28px rgba(12,26,40,.3)}
+  .pc .nm{font-size:14px;font-weight:600;color:var(--ink-soft)}
+  .pc .pr{font-family:"Schibsted Grotesk";font-weight:700;font-size:38px;margin:8px 0 2px;letter-spacing:-.02em}
+  .pc .pr small{font-family:"Inter";font-size:14px;color:var(--muted);font-weight:500}
+  .pc .desc{color:var(--muted);font-size:13.5px;margin-bottom:18px}
+  .pc .tag{align-self:flex-start;font-size:11.5px;font-weight:700;color:#fff;background:var(--accent);padding:4px 10px;border-radius:6px;margin-bottom:12px}
+  .pc ul{list-style:none;margin:4px 0 24px;flex:1}
+  .pc li{display:flex;gap:10px;align-items:flex-start;padding:6px 0;color:var(--ink-soft);font-size:14px}
+  .pc li svg{flex:0 0 auto;margin-top:3px;color:var(--accent)}
+  .note{color:var(--muted);font-size:13px;margin-top:18px}
 
-  /* TRUST */
-  .trust{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:34px}
-  @media(max-width:620px){.trust{grid-template-columns:1fr;text-align:left}}
-  .trust h3{font-size:24px}
-  .trust p{color:var(--muted);margin-top:10px;font-size:15.5px}
+  /* GUARANTEE */
+  .guar{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:32px;background:linear-gradient(180deg,#fff,#fbfcfd)}
+  @media(max-width:600px){.guar{grid-template-columns:1fr}}
+  .guar h3{font-size:22px}
+  .guar p{color:var(--ink-soft);margin-top:9px;font-size:15.5px;max-width:46em}
 
-  /* FINAL CTA */
-  .final{text-align:center}
-  .final h2{max-width:14em;margin:0 auto}
-  .final p{color:var(--muted);font-size:18px;margin:16px auto 30px;max-width:34em}
+  /* FAQ */
+  .faq{margin-top:40px;border-top:1px solid var(--line)}
+  details{border-bottom:1px solid var(--line)}
+  summary{list-style:none;cursor:pointer;padding:20px 0;font-weight:600;font-size:17px;font-family:"Inter";display:flex;justify-content:space-between;align-items:center;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary .pm{color:var(--muted);transition:transform .2s;flex:0 0 auto}
+  details[open] summary .pm{transform:rotate(45deg)}
+  details p{color:var(--ink-soft);padding:0 0 20px;font-size:15px;max-width:52em}
 
-  footer{border-top:1px solid var(--line);padding:34px 0;color:var(--muted);font-size:14px}
-  .foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  /* FINAL */
+  .final{text-align:center;background:var(--ink);color:#fff;border-radius:20px;padding:60px 28px;margin:0 28px}
+  .final h2{color:#fff;margin:0 auto;max-width:15em}
+  .final p{color:#aebccb;font-size:18px;margin:14px auto 28px;max-width:34em}
+  .final .btn-primary{background:#fff;color:var(--ink)}
+  .final .btn-primary:hover{background:#eef1f4}
 
-  @media(prefers-reduced-motion:no-preference){
-    .reveal{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
-    .reveal.d1{animation-delay:.08s}.reveal.d2{animation-delay:.16s}.reveal.d3{animation-delay:.24s}
-    @keyframes rise{to{opacity:1;transform:none}}
-  }
+  /* FOOTER */
+  footer{padding:46px 0 40px}
+  .fcols{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:30px}
+  .fcols .fb{max-width:22em}
+  .fcols p{color:var(--muted);font-size:14px;margin-top:10px}
+  .fcols .lbl{font-size:12.5px;text-transform:none;color:var(--ink);font-weight:600;margin-bottom:10px}
+  .fcols a{display:block;color:var(--muted);font-size:14px;padding:3px 0}
+  .fcols a:hover{color:var(--ink)}
+  .copyright{color:var(--muted);font-size:13px;margin-top:30px}
 </style>
 </head>
 <body>
@@ -131,15 +158,16 @@
 <header>
   <div class="wrap">
     <nav>
-      <a class="brand" href="#top">
-        <svg class="crest" viewBox="0 0 32 32" fill="none"><path d="M16 2l11 4v9c0 7.2-4.7 12.6-11 15-6.3-2.4-11-7.8-11-15V6l11-4z" fill="#122844" stroke="#f2b63c" stroke-width="1.5"/><path d="M11 16.5l3.4 3.4L22 12" stroke="#35c08a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <a class="wm" href="#top">
+        <svg width="26" height="26" viewBox="0 0 32 32" fill="none"><path d="M16 2.5l10.5 3.8v8.3c0 6.8-4.4 11.9-10.5 14.2C9.9 26.5 5.5 21.4 5.5 14.6V6.3L16 2.5z" fill="#0c1a28"/><path d="M11 16l3.3 3.3L21.5 12" stroke="#2fe39a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Fortify
       </a>
-      <div class="navlinks">
-        <a class="nl" href="#ameacas">O que encontramos</a>
+      <div class="nav-r">
+        <a class="nl" href="#risco">O que encontramos</a>
         <a class="nl" href="#como">Como funciona</a>
         <a class="nl" href="#precos">Preços</a>
-        <a href="plataforma.html" class="btn btn-ghost" style="padding:9px 18px">Entrar</a>
+        <a class="nl" href="#faq">Perguntas</a>
+        <a href="plataforma.html" class="btn btn-outline" style="padding:9px 17px">Entrar</a>
       </div>
     </nav>
   </div>
@@ -148,138 +176,173 @@
 <div id="top" class="hero">
   <div class="wrap hero-grid">
     <div>
-      <span class="seal-tag reveal"><span class="d"></span> Auditoria ética · só com autorização</span>
-      <h1 class="reveal d1">A segurança do teu site, <em style="font-style:italic;color:var(--gold)">verificada</em>.</h1>
-      <p class="lead reveal d2">Encontramos as fragilidades do teu site antes de quem tem más intenções — e entregamos-te um relatório claro para as corrigir.</p>
-      <div class="cta-row reveal d3">
-        <a href="plataforma.html" class="btn btn-gold">Analisar o meu site</a>
-        <a href="#precos" class="btn btn-ghost">Ver preços</a>
+      <span class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 2.5v5.5c0 4.5-3 8-7 9.2-4-1.2-7-4.7-7-9.2V5.5L12 3z" stroke="#0a5a3d" stroke-width="1.6" stroke-linejoin="round"/></svg> Auditoria com autorização verificada</span>
+      <h1>A segurança do site da tua empresa, tratada a sério.</h1>
+      <p class="sub">Encontramos as fragilidades do teu site antes de quem tem más intenções — e entregamos um relatório claro, com a solução para cada uma.</p>
+      <div class="cta-row">
+        <a href="plataforma.html" class="btn btn-primary">Analisar o meu site</a>
+        <a href="#precos" class="btn btn-outline">Ver preços</a>
       </div>
-      <div class="reassure reveal d3">
-        <div><svg class="ok" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Verificamos que o site é teu antes de testar</div>
-        <div><svg class="ok" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Baseado no OWASP Top 10, conforme o RGPD</div>
+      <div class="microtrust">
+        <span><svg class="c" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Verificação de domínio</span>
+        <span><svg class="c" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> OWASP Top 10</span>
+        <span><svg class="c" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Conforme o RGPD</span>
       </div>
     </div>
 
-    <div class="report reveal d2" aria-hidden="true">
-      <svg class="stamp" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#f2b63c" stroke-width="2.5" stroke-dasharray="4 3"/><circle cx="50" cy="50" r="37" fill="none" stroke="#f2b63c" stroke-width="1"/><path d="M38 50l8 8 18-18" stroke="#35c08a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="50" y="26" text-anchor="middle" fill="#f2b63c" font-family="Inter" font-size="8" font-weight="700">AUTORIZADO</text></svg>
-      <div class="rhead">
-        <span class="site">lojadaana.pt</span>
-        <span class="vbadge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Domínio verificado</span>
+    <div class="mock" aria-hidden="true">
+      <div class="mock-top"><span class="dots"><i></i><i></i><i></i></span><span class="u">fortify · relatório de segurança</span></div>
+      <div class="mock-body">
+        <div class="mock-head">
+          <span class="d">lojadaana.pt</span>
+          <span class="chip-ok"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Domínio verificado</span>
+        </div>
+        <div class="grade">
+          <svg class="ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5" fill="none" stroke="#eef1f5" stroke-width="4"/><circle cx="18" cy="18" r="15.5" fill="none" stroke="#bd8111" stroke-width="4" stroke-linecap="round" stroke-dasharray="97.4" stroke-dashoffset="30" transform="rotate(-90 18 18)"/><text x="18" y="22" text-anchor="middle" font-family="Schibsted Grotesk" font-size="12" font-weight="700" fill="#0c1a28">C</text></svg>
+          <div><div class="gt">Pontuação de segurança</div><div class="gn">72 / 100 — 4 falhas a corrigir</div></div>
+        </div>
+        <div class="rrow"><span class="sev h">Crítico</span><span class="rt">Formulário vulnerável a injeção SQL</span><span class="fix">Corrigir</span></div>
+        <div class="rrow"><span class="sev m">Médio</span><span class="rt">Cabeçalhos de segurança em falta</span><span class="fix">Corrigir</span></div>
+        <div class="rrow"><span class="sev m">Médio</span><span class="rt">Certificado SSL mal configurado</span><span class="fix">Corrigir</span></div>
+        <div class="rrow"><span class="sev l">Baixo</span><span class="rt">Versão do WordPress exposta</span><span class="fix">Corrigir</span></div>
       </div>
-      <div class="finding"><span class="sev high"></span><span class="ft">Formulário vulnerável a injeção</span><span class="fs">Crítico</span></div>
-      <div class="finding"><span class="sev med"></span><span class="ft">Cabeçalhos de segurança em falta</span><span class="fs">Médio</span></div>
-      <div class="finding"><span class="sev med"></span><span class="ft">Certificado SSL mal configurado</span><span class="fs">Médio</span></div>
-      <div class="finding"><span class="sev low"></span><span class="ft">Versão do WordPress exposta</span><span class="fs">Baixo</span></div>
-      <div style="margin-top:16px;font-size:13px;color:var(--muted)">Relatório de exemplo · cada falha com solução</div>
     </div>
   </div>
 </div>
 
-<section id="ameacas">
+<div class="strip">
   <div class="wrap">
-    <div class="shead">
-      <div class="kicker">O que encontramos</div>
-      <h2>As portas que deixam entrar quem não devia</h2>
-      <p>Um ataque a uma pequena empresa significa perder dados de clientes, apanhar multas do RGPD e ficar dias sem vender. Nós fechamos essas portas primeiro.</p>
+    <span class="lbl">Feito para quem vive do seu site:</span>
+    <div class="items">
+      <span>Lojas online</span><span>Clínicas</span><span>Escritórios</span><span>Restaurantes</span><span>Imobiliárias</span>
     </div>
-    <div class="threats">
-      <div class="threat"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h10" stroke="#f2b63c" stroke-width="1.8" stroke-linecap="round"/></svg></div><div><h3>Injeção e XSS</h3><p>Falhas que deixam alguém manipular a tua base de dados ou atacar os teus visitantes.</p></div></div>
-      <div class="threat"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="#f2b63c" stroke-width="1.8"/><path d="M8 10V7a4 4 0 018 0v3" stroke="#f2b63c" stroke-width="1.8"/></svg></div><div><h3>Logins e acessos</h3><p>Palavras-passe fracas e permissões mal feitas que dão acesso a quem não devia ter.</p></div></div>
-      <div class="threat"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z" stroke="#f2b63c" stroke-width="1.8" stroke-linejoin="round"/></svg></div><div><h3>SSL e cabeçalhos</h3><p>Ligações inseguras e proteções em falta que facilitam a vida a um atacante.</p></div></div>
-      <div class="threat"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l5 5v13H7z" stroke="#f2b63c" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5" stroke="#f2b63c" stroke-width="1.8"/></svg></div><div><h3>Ficheiros expostos</h3><p>Backups, chaves e configurações acessíveis ao público sem te aperceberes.</p></div></div>
+  </div>
+</div>
+
+<section id="risco">
+  <div class="wrap">
+    <h2>O que deixa um site aberto a um ataque</h2>
+    <p class="lede">Um incidente numa pequena empresa custa dados de clientes, coimas do RGPD e dias sem vender. Procuramos as entradas mais usadas por atacantes e mostramos-te como fechá-las.</p>
+    <div class="tg">
+      <div class="tcell"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><h3>Injeção e XSS</h3><p>Falhas que permitem manipular a tua base de dados ou atacar os teus visitantes através do site.</p></div>
+      <div class="tcell"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.8"/></svg></div><h3>Logins e permissões</h3><p>Palavras-passe fracas e acessos mal configurados que abrem a porta a quem não devia entrar.</p></div>
+      <div class="tcell"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 3v5.5c0 4.7-3.2 8.2-8 9.5-4.8-1.3-8-4.8-8-9.5V6l8-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div><h3>SSL e cabeçalhos</h3><p>Ligações inseguras e proteções em falta que facilitam a interceção de dados.</p></div>
+      <div class="tcell"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l5 5v13H7z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5" stroke="currentColor" stroke-width="1.8"/></svg></div><h3>Ficheiros expostos</h3><p>Backups, chaves e configurações acessíveis publicamente sem que te apercebas.</p></div>
     </div>
   </div>
 </section>
 
 <section id="como" class="how">
   <div class="wrap">
-    <div class="shead">
-      <div class="kicker">Como funciona</div>
-      <h2>Simples, transparente e sempre com o teu aval</h2>
-      <p>Nunca testamos nada sem autorização. Tu mandas, nós protegemos.</p>
-    </div>
-    <div class="steps">
-      <div class="step"><div class="n">1</div><h3>Provas que é teu</h3><p>Confirmas a posse do domínio num passo (DNS ou ficheiro). É o que torna tudo legítimo.</p></div>
-      <div class="step"><div class="n">2</div><h3>Assinas a autorização</h3><p>Assinas no ecrã, com o rato ou o dedo. Fica tudo registado e legal.</p></div>
-      <div class="step"><div class="n">3</div><h3>Analisamos</h3><p>Testamos o site a fundo, numa janela combinada, sem afetar o teu negócio.</p></div>
-      <div class="step"><div class="n">4</div><h3>Corriges com o relatório</h3><p>Recebes cada falha com a gravidade e o passo-a-passo para a resolver.</p></div>
+    <h2>Como funciona</h2>
+    <p class="lede">Sempre com o teu aval. Nunca testamos um site sem autorização verificada do dono.</p>
+    <div class="hsteps">
+      <div class="hstep"><div class="n">1</div><h3>Provas que é teu</h3><p>Confirmas a posse do domínio num passo, por DNS ou ficheiro. É o que torna tudo legítimo.</p></div>
+      <div class="hstep"><div class="n">2</div><h3>Assinas a autorização</h3><p>Assinas no ecrã, com o rato ou o dedo. Fica registado e dentro da lei.</p></div>
+      <div class="hstep"><div class="n">3</div><h3>Analisamos o site</h3><p>Testamos a fundo, numa janela combinada, sem afetar o funcionamento do negócio.</p></div>
+      <div class="hstep"><div class="n">4</div><h3>Corriges com o relatório</h3><p>Recebes cada falha com a gravidade e o passo-a-passo para a resolver.</p></div>
     </div>
   </div>
 </section>
 
 <section id="precos">
   <div class="wrap">
-    <div class="shead">
-      <div class="kicker">Preços</div>
-      <h2>Claros, sem surpresas</h2>
-      <p>Começa pequeno. Sobe quando quiseres mais proteção.</p>
-    </div>
-    <div class="plans">
-      <div class="plan">
-        <div class="pn">Check-up</div>
-        <div class="pp">25€ <small>/ único</small></div>
-        <p style="color:var(--muted);font-size:14px;margin-top:4px">A análise rápida e segura.</p>
+    <h2>Preços claros, sem surpresas</h2>
+    <p class="lede">Começa com uma análise rápida e sobe quando quiseres proteção contínua.</p>
+    <div class="pg">
+      <div class="pc">
+        <div class="nm">Check-up</div>
+        <div class="pr">25€ <small>/ único</small></div>
+        <div class="desc">A primeira análise, rápida e segura.</div>
         <ul>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Cabeçalhos e SSL</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Ficheiros e dados expostos</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Relatório resumido</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Cabeçalhos e SSL</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Ficheiros e dados expostos</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Relatório resumido</li>
         </ul>
-        <a href="plataforma.html" class="btn btn-ghost" style="width:100%">Começar</a>
+        <a href="plataforma.html" class="btn btn-outline" style="width:100%">Começar</a>
       </div>
-      <div class="plan feat">
-        <span class="feat-tag">Mais escolhido</span>
-        <div class="pn">Auditoria completa</div>
-        <div class="pp">60€ <small>/ projeto</small></div>
-        <p style="color:var(--muted);font-size:14px;margin-top:4px">A proteção a sério.</p>
+      <div class="pc hl">
+        <span class="tag">Mais escolhido</span>
+        <div class="nm">Auditoria completa</div>
+        <div class="pr">60€ <small>/ projeto</small></div>
+        <div class="desc">A proteção a sério, do início ao fim.</div>
         <ul>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Tudo do Check-up</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> OWASP Top 10 completo</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Testes de login e acessos</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Relatório detalhado + reunião</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Tudo do Check-up</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> OWASP Top 10 completo</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Testes de login e acessos</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Relatório detalhado + reunião</li>
         </ul>
-        <a href="plataforma.html" class="btn btn-gold" style="width:100%">Pedir auditoria</a>
+        <a href="plataforma.html" class="btn btn-primary" style="width:100%">Pedir auditoria</a>
       </div>
-      <div class="plan">
-        <div class="pn">Monitorização</div>
-        <div class="pp">15€ <small>/ mês</small></div>
-        <p style="color:var(--muted);font-size:14px;margin-top:4px">Vigilância contínua.</p>
+      <div class="pc">
+        <div class="nm">Monitorização</div>
+        <div class="pr">15€ <small>/ mês</small></div>
+        <div class="desc">Vigilância contínua ao longo do tempo.</div>
         <ul>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Re-análise mensal</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Alertas de novas falhas</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Apoio prioritário</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Re-análise mensal</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Alertas de novas falhas</li>
+          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Apoio prioritário</li>
         </ul>
-        <a href="plataforma.html" class="btn btn-ghost" style="width:100%">Subscrever</a>
+        <a href="plataforma.html" class="btn btn-outline" style="width:100%">Subscrever</a>
       </div>
     </div>
-    <p style="color:var(--muted);font-size:13px;margin-top:20px">Valores indicativos. O preço final depende do tamanho e complexidade do site.</p>
+    <p class="note">Valores indicativos. O preço final depende do tamanho e da complexidade do site.</p>
   </div>
 </section>
 
 <section>
   <div class="wrap">
-    <div class="trust">
-      <svg width="54" height="54" viewBox="0 0 32 32" fill="none"><path d="M16 2l11 4v9c0 7.2-4.7 12.6-11 15-6.3-2.4-11-7.8-11-15V6l11-4z" fill="#16314f" stroke="#f2b63c" stroke-width="1.3"/><path d="M11 16.5l3.4 3.4L22 12" stroke="#35c08a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="guar">
+      <svg width="50" height="50" viewBox="0 0 32 32" fill="none"><path d="M16 2.5l10.5 3.8v8.3c0 6.8-4.4 11.9-10.5 14.2C9.9 26.5 5.5 21.4 5.5 14.6V6.3L16 2.5z" fill="#eef7f2" stroke="#0f7a52" stroke-width="1.2"/><path d="M11 16l3.3 3.3L21.5 12" stroke="#0f7a52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <div>
-        <h3>Ética e legalidade primeiro</h3>
-        <p>Só testamos sites com autorização escrita do dono, verificada por controlo do domínio. Cumprimos o RGPD, tratamos tudo com confidencialidade e nunca divulgamos as falhas que encontramos.</p>
+        <h3>Ética e legalidade, sem exceções</h3>
+        <p>Só analisamos sites com autorização escrita do dono, confirmada por controlo do domínio. Cumprimos o RGPD, tratamos tudo com total confidencialidade e nunca divulgamos as falhas que encontramos.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="final">
+<section id="faq">
   <div class="wrap">
-    <h2>Não esperes pelo ataque para pensar na segurança.</h2>
-    <p>Em minutos verificas o teu site e recebes um plano claro para o proteger.</p>
-    <a href="plataforma.html" class="btn btn-gold">Analisar o meu site</a>
+    <h2>Perguntas frequentes</h2>
+    <div class="faq">
+      <details open><summary>Preciso de perceber de informática?<span class="pm"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></summary><p>Não. Tratamos da parte técnica e entregamos o relatório em linguagem simples, com o passo-a-passo para corrigir. Se tiveres um técnico ou agência, o relatório serve-lhes diretamente.</p></details>
+      <details><summary>É seguro? Não vão partir o meu site?<span class="pm"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></summary><p>Trabalhamos com cuidado profissional e evitamos qualquer teste destrutivo. Nunca fazemos ataques de negação de serviço nem alteramos os teus dados. Recomendamos sempre teres uma cópia de segurança atualizada antes de começarmos.</p></details>
+      <details><summary>Como provo que o site é meu?<span class="pm"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></summary><p>Num passo simples: adicionas um registo no DNS do domínio ou colocas um ficheiro nosso na raiz do site. A plataforma confirma automaticamente. É o mesmo método que o Google usa para verificar sites.</p></details>
+      <details><summary>Quanto tempo demora?<span class="pm"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></summary><p>O Check-up fica pronto no mesmo dia. A auditoria completa demora, em geral, de dois a cinco dias, conforme o tamanho do site.</p></details>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="final">
+    <h2>Não esperes por um ataque para pensar na segurança.</h2>
+    <p>Verifica o teu site e recebe um plano claro para o proteger.</p>
+    <a href="plataforma.html" class="btn btn-primary">Analisar o meu site</a>
   </div>
 </section>
 
 <footer>
-  <div class="wrap foot">
-    <div><strong style="color:var(--txt);font-family:'Fraunces'">Fortify</strong> — Auditoria de segurança para PME · Portugal</div>
-    <div>Testes apenas com autorização do proprietário · Conforme o RGPD</div>
+  <div class="wrap">
+    <div class="fcols">
+      <div class="fb">
+        <a class="wm" href="#top" style="font-size:19px"><svg width="24" height="24" viewBox="0 0 32 32" fill="none"><path d="M16 2.5l10.5 3.8v8.3c0 6.8-4.4 11.9-10.5 14.2C9.9 26.5 5.5 21.4 5.5 14.6V6.3L16 2.5z" fill="#0c1a28"/><path d="M11 16l3.3 3.3L21.5 12" stroke="#2fe39a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Fortify</a>
+        <p>Auditoria de segurança para pequenas e médias empresas em Portugal.</p>
+      </div>
+      <div>
+        <div class="lbl">Serviço</div>
+        <a href="#risco">O que encontramos</a>
+        <a href="#como">Como funciona</a>
+        <a href="#precos">Preços</a>
+      </div>
+      <div>
+        <div class="lbl">Começar</div>
+        <a href="plataforma.html">Criar conta</a>
+        <a href="plataforma.html">Entrar</a>
+        <a href="#faq">Perguntas frequentes</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 Fortify · Testes apenas com autorização do proprietário · Conforme o RGPD</div>
   </div>
 </footer>
 
