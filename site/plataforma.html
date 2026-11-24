@@ -226,7 +226,7 @@ function hide(id){$('#'+id)?.classList.add('hidden');}
 /* ---------- TOPBAR ---------- */
 function topbar(extra=''){
   return `<div class="topbar"><h1><span class="dot"></span> Fortify</h1>
-    <nav><span class="muted">${me.name||me.email}</span>${me.is_admin?' <a onclick="go(\\'admin\\')">Admin</a> <a onclick="go(\\'dash\\')">Cliente</a>':''}${extra}<a onclick="logout()">Sair</a></nav></div>`;
+    <nav><span class="muted">${me.name||me.email}</span>${me.is_admin?` <a onclick="go('admin')">Admin</a> <a onclick="go('dash')">Cliente</a>`:''}${extra}<a onclick="logout()">Sair</a></nav></div>`;
 }
 
 /* ---------- CLIENT DASHBOARD ---------- */
