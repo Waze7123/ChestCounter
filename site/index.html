@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fortify — Segurança para o site da tua empresa</title>
-<meta name="description" content="A Fortify analisa o site da tua empresa, encontra as fragilidades antes dos criminosos e entrega um relatório claro para as corrigir. Com autorização verificada e conforme o RGPD.">
+<title>Fortify — Segurança para lojas online em Portugal</title>
+<meta name="description" content="Faz um check de segurança gratuito à tua loja online. Relatório completo em português com cada falha e a forma de a corrigir. Com autorização verificada e conforme o RGPD.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
@@ -84,12 +84,12 @@
 
   /* Porque importa — factos verificáveis, não números inventados */
   .why{display:grid;grid-template-columns:repeat(3,1fr);margin-top:56px;border:1px solid var(--hair);border-radius:14px;overflow:hidden}
-  .why div{padding:28px;background:var(--bg-2)}
-  .why div+div{border-left:1px solid var(--hair)}
+  .why>div{padding:28px;background:var(--bg-2)}
+  .why>div+div{border-left:1px solid var(--hair)}
   .why .big{font:600 34px/1 "Inter Tight";letter-spacing:-.03em;font-variant-numeric:tabular-nums}
   .why p{color:var(--t2);font-size:14.5px;margin-top:12px}
   .why small{display:block;color:var(--t3);font-size:12px;margin-top:10px}
-  @media(max-width:860px){.why{grid-template-columns:1fr}.why div+div{border-left:0;border-top:1px solid var(--hair)}}
+  @media(max-width:860px){.why{grid-template-columns:1fr}.why>div+div{border-left:0;border-top:1px solid var(--hair)}}
 
   /* Compromissos */
   .promises{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px}
@@ -228,6 +228,40 @@
     .r2{animation-delay:.08s}.r3{animation-delay:.16s}.r4{animation-delay:.28s}
     @keyframes rise{to{opacity:1;transform:none}}
   }
+  /* Resultado do check gratuito */
+  .qres{max-width:620px;margin:18px auto 0;text-align:left;border:1px solid var(--hair-2);border-radius:14px;background:rgba(19,19,22,.85);backdrop-filter:blur(10px);padding:20px 22px}
+  .qtop{display:flex;align-items:center;gap:16px;padding-bottom:14px;border-bottom:1px solid var(--hair)}
+  .qscore{font:600 34px/1 "Inter Tight";letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+  .qscore small{font-size:14px;color:var(--t3);font-weight:500}
+  .qtop p{color:var(--t2);font-size:14px}
+  .qtop p b{color:var(--t1);font-weight:500}
+  .qlist{list-style:none;margin:6px 0 0}
+  .qlist li{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--hair);font-size:14px;color:var(--t2)}
+  .qlist li:last-child{border-bottom:0}
+  .qlist .m{flex:none;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;margin-top:1px}
+  .qlist .m.y{background:var(--acc-dim);color:var(--acc)}
+  .qlist .m.n{background:rgba(248,113,113,.15);color:var(--red)}
+  .qlist b{color:var(--t1);font-weight:500;display:block}
+  .qcta{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;padding-top:16px;border-top:1px solid var(--hair);align-items:center}
+  .qcta small{color:var(--t3);font-size:12.5px;flex-basis:100%}
+  .qerr{color:var(--t2);font-size:14px}
+  .spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(9,9,11,.25);border-top-color:#09090b;border-radius:50%;animation:sp .7s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+
+  /* Alternativas */
+  .alts{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:56px}
+  .alt{border:1px solid var(--hair);border-radius:14px;padding:24px;background:var(--bg-2)}
+  .alt h3{font-size:16.5px;font-weight:600;letter-spacing:-.01em}
+  .alt p{color:var(--t2);font-size:14px;margin-top:10px}
+  .alt.me{border-color:rgba(52,211,153,.4);background:radial-gradient(120% 80% at 50% 0%,rgba(16,185,129,.12),transparent 60%),var(--surface)}
+  .alt.me h3{color:var(--acc)}
+  @media(max-width:960px){.alts{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.alts{grid-template-columns:1fr}}
+
+  .guarantee{display:flex;gap:14px;align-items:flex-start;margin-top:14px;padding:20px 22px;border:1px solid rgba(52,211,153,.3);border-radius:14px;background:rgba(16,185,129,.06);color:var(--acc)}
+  .guarantee svg{flex:none}
+  .guarantee p{color:var(--t2);font-size:14.5px}
+  .guarantee b{color:var(--t1);font-weight:600}
 </style>
 </head>
 <body>
@@ -247,7 +281,7 @@
       </div>
       <div class="nav-cta">
         <a href="plataforma.html" class="btn btn-g">Entrar</a>
-        <a href="plataforma.html" class="btn btn-p">Criar conta grátis</a>
+        <a href="#check" class="btn btn-p" onclick="focusCheck()">Check grátis</a>
       </div>
     </nav>
   </div>
@@ -256,17 +290,18 @@
 <main id="top">
   <div class="hero">
     <div class="wrap">
-      <a href="#processo" class="eyebrow rise"><b>Novo</b> Verificação automática de domínio</a>
-      <h1 class="rise r2"><span>Encontra as falhas antes dos atacantes.</span></h1>
-      <p class="lead rise r3">Diz-nos o endereço do teu site. Recebes no mesmo dia um relatório em português com cada falha, o risco que representa e como a corrigir.</p>
-      <form class="scan rise r4" onsubmit="return startScan(event)">
-        <label for="dom" class="sr">Endereço do teu site</label>
+      <a href="#check" class="eyebrow rise"><b>Grátis</b> Check em segundos, sem registo</a>
+      <h1 class="rise r2"><span>A tua loja online, segura antes do próximo ataque.</span></h1>
+      <p class="lead rise r3">Escreve o endereço da tua loja. Mostramos-te já o que qualquer pessoa consegue ver sobre a segurança dela — e, se quiseres, entregamos o relatório completo com as correções no mesmo dia.</p>
+      <form id="check" class="scan rise r4" onsubmit="return quickCheck(event)">
+        <label for="dom" class="sr">Endereço da tua loja</label>
         <span class="scan-pre">https://</span>
-        <input id="dom" name="dom" inputmode="url" autocomplete="url" placeholder="o-teu-site.pt" required>
-        <button class="btn btn-p" type="submit">Analisar o meu site
+        <input id="dom" name="dom" inputmode="url" autocomplete="url" placeholder="a-tua-loja.pt" required>
+        <button class="btn btn-p" id="qbtn" type="submit">Fazer check grátis
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </form>
-      <p class="hero-note rise r4">Criar conta é grátis · Check-up a partir de 25€ · Só testamos com a tua autorização</p>
+      <div id="qres" class="qres" aria-live="polite" hidden></div>
+      <p class="hero-note rise r4">Grátis e sem registo · Só lemos o que o site mostra a qualquer visitante · <a href="relatorio-exemplo.html" style="color:var(--t2);text-decoration:underline;text-underline-offset:3px">Ver relatório de exemplo</a></p>
     </div>
 
     <div class="stage rise r4" aria-hidden="true">
@@ -307,13 +342,29 @@
     <div class="wrap">
       <div class="sh">
         <div class="k">Porque importa</div>
-        <h2>Ser pequeno não te torna invisível.</h2>
+        <h2>Uma loja pequena não é uma loja invisível.</h2>
         <p>A maior parte dos ataques é automática: programas que percorrem a internet à procura de qualquer site com uma porta aberta. Não escolhem pelo tamanho da empresa.</p>
       </div>
       <div class="why">
         <div><div class="big">4%</div><p>da faturação anual — o limite das coimas do RGPD por falhas graves na proteção de dados dos clientes.</p><small>RGPD, artigo 83.º</small></div>
         <div><div class="big">72 h</div><p>é o prazo para avisar a CNPD depois de uma violação de dados. Sem saber o que falhou, é difícil cumprir.</p><small>RGPD, artigo 33.º</small></div>
         <div><div class="big">1 dia</div><p>é quanto demora o nosso Check-up. Ficas a saber o que um atacante veria, antes de ele olhar.</p><small>Check-up Fortify, a partir de 25€</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="alternativas">
+    <div class="wrap">
+      <div class="sh">
+        <div class="k">E se eu não fizer nada?</div>
+        <h2>As alternativas — e o que lhes falta.</h2>
+        <p>A maior parte dos donos de lojas fica por uma destas opções. Todas têm o seu lugar, mas nenhuma olha para a loja como um atacante olha.</p>
+      </div>
+      <div class="alts">
+        <div class="alt"><h3>Não fazer nada</h3><p>Funciona até ao dia em que não funciona. Quando um problema aparece, normalmente já há dados de clientes em causa e prazos do RGPD a contar.</p></div>
+        <div class="alt"><h3>Plugin de segurança</h3><p>Útil e recomendado, mas protege o site por dentro. Não testa a loja de fora, como um atacante faria, nem te diz o que corrigir no servidor.</p></div>
+        <div class="alt"><h3>"O meu web designer trata disso"</h3><p>Fazer sites e testar a segurança são ofícios diferentes. O nosso relatório dá-lhe uma lista exata do que corrigir.</p></div>
+        <div class="alt me"><h3>Fortify</h3><p>Testa a loja de fora, com a tua autorização. Relatório em português, com prova e correção para cada falha, preço fechado e resposta no mesmo dia.</p></div>
       </div>
     </div>
   </section>
@@ -350,8 +401,8 @@
         </div>
       </div>
       <div class="inline-cta">
-        <p><b>Queres saber o que o teu site está a expor?</b> O Check-up responde no mesmo dia.</p>
-        <a href="#top" class="btn btn-p" onclick="setTimeout(()=>document.getElementById('dom').focus(),400)">Analisar o meu site</a>
+        <p><b>Vê exatamente o que recebes, antes de pagar.</b> Um relatório completo de uma loja fictícia, com as falhas e as correções.</p>
+        <span style="display:flex;gap:10px;flex-wrap:wrap"><a href="relatorio-exemplo.html" class="btn btn-p">Ver relatório de exemplo</a><a href="#check" class="btn btn-g" onclick="focusCheck()">Fazer check grátis</a></span>
       </div>
     </div>
   </section>
@@ -402,12 +453,13 @@
           <div class="n">Auditoria completa <em>Mais escolhido</em></div>
           <div class="p">60€ <small>por site</small></div>
           <div class="d">A análise a fundo, do início ao fim.</div>
-          <div class="fit"><b>Ideal para:</b> lojas online e sites com área de cliente ou formulários.</div>
+          <div class="fit"><b>Ideal para:</b> lojas com pagamentos, área de cliente ou formulários.</div>
           <ul>
             <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Tudo o que está no Check-up</li>
             <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Testes OWASP Top 10</li>
             <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Logins, sessões e permissões</li>
             <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Relatório detalhado e reunião</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b style="color:var(--t1);font-weight:500">Novo teste grátis</b> depois das correções (até 30 dias)</span></li>
           </ul>
           <a href="plataforma.html" class="btn btn-p">Pedir auditoria completa</a>
         </div>
@@ -424,7 +476,11 @@
           <a href="plataforma.html" class="btn btn-g">Ativar monitorização</a>
         </div>
       </div>
-      <p class="help">Não sabes qual escolher? Começa pelo Check-up — em poucas horas mostra se precisas de ir mais a fundo. Dúvidas? <a href="#faq">Vê as perguntas frequentes</a>.</p>
+      <div class="guarantee">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 3v5.5c0 4.7-3.2 8.2-8 9.5-4.8-1.3-8-4.8-8-9.5V6l8-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.5 12l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p><b>Garantia do Check-up.</b> Se a análise não encontrar nada para melhorar na tua loja, devolvemos os 25€. E na Auditoria completa, voltamos a testar de graça depois de corrigires, para confirmar que ficou tudo resolvido.</p>
+      </div>
+      <p class="help">Não sabes qual escolher? Começa pelo check grátis acima, e depois pelo Check-up. Dúvidas? <a href="#faq">Vê as perguntas frequentes</a>.</p>
     </div>
   </section>
 
@@ -441,7 +497,7 @@
         <details open><summary>Preciso de perceber de informática?<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary><p>Não. O relatório está em linguagem simples, com o passo a passo para cada correção. Se tiveres um técnico ou uma agência, podes enviar-lhes o relatório tal como está.</p></details>
         <details><summary>A análise pode partir o meu site?<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary><p>Não fazemos testes destrutivos nem ataques de negação de serviço, e não alteramos os teus dados. Mesmo assim, recomendamos ter uma cópia de segurança recente antes de começar.</p></details>
         <details><summary>Como provo que o site é meu?<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary><p>Adicionas um registo TXT no DNS do domínio ou colocas um ficheiro nosso na raiz do site. A plataforma verifica automaticamente — é o mesmo método que o Google usa.</p></details>
-        <details><summary>Quanto custa, ao certo?<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary><p>O Check-up custa 25€ e a Auditoria completa 60€ por site. A Monitorização é 15€ por mês e podes cancelar quando quiseres. Criar conta não custa nada, e sabes sempre o preço antes de começarmos.</p></details>
+        <details><summary>Quanto custa, ao certo?<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary><p>O Check-up custa 25€ e a Auditoria completa 60€ por site. A Monitorização é 15€ por mês e podes cancelar quando quiseres. Criar conta e fazer o check rápido não custam nada, e sabes sempre o preço antes de começarmos. Se o Check-up não encontrar nada para melhorar, devolvemos os 25€.</p></details>
         <details><summary>Quanto tempo demora?<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary><p>O Check-up fica pronto no mesmo dia. A auditoria completa demora entre dois e cinco dias, conforme o tamanho do site.</p></details>
       </div>
     </div>
@@ -449,26 +505,46 @@
 
   <div class="wrap">
     <div class="end">
-      <h2>Sabe hoje o que um atacante veria amanhã.</h2>
-      <p>Criar conta é grátis e demora um minuto. Só pagas quando pedires a análise — e sabes o preço antes.</p>
+      <h2>Sabe hoje o que um atacante veria na tua loja amanhã.</h2>
+      <p>Começa pelo check grátis. Se quiseres ir mais a fundo, o relatório completo chega no mesmo dia — com garantia.</p>
       <div class="hero-cta">
-        <a href="plataforma.html" class="btn btn-p">Criar conta grátis</a>
-        <a href="#precos" class="btn btn-g">Ver preços</a>
+        <a href="#check" class="btn btn-p" onclick="focusCheck()">Fazer check grátis</a>
+        <a href="relatorio-exemplo.html" class="btn btn-g">Ver relatório de exemplo</a>
       </div>
     </div>
   </div>
 </main>
 
-<div class="mbar" id="mbar"><span>Check-up a partir de 25€</span><a href="#top" class="btn btn-p" onclick="setTimeout(()=>document.getElementById('dom').focus(),400)">Analisar o site</a></div>
+<div class="mbar" id="mbar"><span>Check grátis, sem registo</span><a href="#check" class="btn btn-p" onclick="focusCheck()">Fazer check</a></div>
 
 <script>
-  // Guarda o domínio e leva o visitante para a plataforma, que o preenche automaticamente.
-  function startScan(e){
+  // Check gratuito: chama a função pública quick-check (só leitura passiva).
+  var API="https://xfavdiwdukzgmpiiigac.supabase.co", KEY="sb_publishable_o2dfHvoDseiCVv1kvWDn8w_RDPX_bVK";
+  function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  function focusCheck(){ setTimeout(function(){ var d=document.getElementById('dom'); d&&d.focus(); },350); }
+  function cleanDom(v){ return (v||'').trim().replace(/^https?:\/\//i,'').replace(/[\/?#].*$/,'').toLowerCase(); }
+  function goFull(host){ try{localStorage.setItem('fortify_site_prefill','https://'+host);}catch(_){} location.href='plataforma.html?site='+encodeURIComponent(host); }
+  async function quickCheck(e){
     e.preventDefault();
-    var v=(document.getElementById('dom').value||'').trim().replace(/^https?:\/\//i,'').replace(/\/.*$/,'');
-    if(!v) return false;
-    try{ localStorage.setItem('fortify_site_prefill','https://'+v); }catch(_){}
-    location.href='plataforma.html?site='+encodeURIComponent(v);
+    var host=cleanDom(document.getElementById('dom').value); if(!host) return false;
+    var box=document.getElementById('qres'), btn=document.getElementById('qbtn'), label=btn.innerHTML;
+    btn.disabled=true; btn.innerHTML='<span class="spin"></span> A verificar…';
+    box.hidden=false; box.innerHTML='<p class="qerr">A ler '+esc(host)+' como um visitante normal…</p>';
+    try{
+      var c=new AbortController(), t=setTimeout(function(){c.abort();},25000);
+      var r=await fetch(API+'/functions/v1/quick-check',{method:'POST',signal:c.signal,headers:{'content-type':'application/json',apikey:KEY},body:JSON.stringify({site:host})});
+      clearTimeout(t);
+      var j=await r.json();
+      if(!r.ok) throw new Error(j.error||'erro');
+      var bad=j.checks.filter(function(x){return !x.ok;}).length;
+      var color=j.score>=80?'var(--acc)':j.score>=50?'var(--amber)':'var(--red)';
+      box.innerHTML='<div class="qtop"><div class="qscore" style="color:'+color+'">'+j.score+'<small> / 100</small></div><p><b>'+esc(j.host)+'</b><br>'+(bad? bad+(bad>1?' pontos a melhorar':' ponto a melhorar')+' só no que se vê de fora.':'Tudo certo no que se vê de fora. O check grátis não testa formulários, logins nem a loja por dentro.')+'</p></div>'
+        +'<ul class="qlist">'+j.checks.map(function(x){return '<li><span class="m '+(x.ok?'y':'n')+'">'+(x.ok?'✓':'✕')+'</span><span><b>'+esc(x.label)+'</b>'+(x.ok?'':esc(x.tip))+'</span></li>';}).join('')+'</ul>'
+        +'<div class="qcta"><button class="btn btn-p" onclick="goFull(\''+esc(j.host)+'\')">Receber relatório completo — 25€</button><a class="btn btn-g" href="relatorio-exemplo.html">Ver um exemplo</a><small>O relatório completo testa também formulários, logins e ficheiros expostos, com a correção para cada falha. Garantia: se não houver nada a melhorar, devolvemos os 25€.</small></div>';
+    }catch(err){
+      var msg=(err&&err.message&&err.name!=='AbortError'&&err.message!=='Failed to fetch')?err.message:'Não conseguimos fazer o check agora.';
+      box.innerHTML='<p class="qerr">'+esc(msg)+'</p><div class="qcta"><button class="btn btn-p" onclick="goFull(\''+esc(host)+'\')">Continuar para o relatório completo</button></div>';
+    }finally{ btn.disabled=false; btn.innerHTML=label; }
     return false;
   }
   // Barra fixa no telemóvel: aparece depois do topo, esconde-se perto do fim.
