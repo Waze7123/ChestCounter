@@ -4,140 +4,187 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fortify — Segurança para o site da tua empresa</title>
-<meta name="description" content="Fortify analisa o site da tua empresa, encontra as fragilidades antes dos criminosos e entrega um relatório claro para as corrigir. Com autorização verificada e conforme o RGPD.">
+<meta name="description" content="A Fortify analisa o site da tua empresa, encontra as fragilidades antes dos criminosos e entrega um relatório claro para as corrigir. Com autorização verificada e conforme o RGPD.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
+  /* Tokens — neutros zinc (Tailwind) + um único acento esmeralda */
   :root{
-    --bg:#0b1119; --bg-elev:#0f1826; --surface:#131d2c; --surface-2:#192538;
-    --line:#22304a; --line-strong:#2d3c59;
-    --ink:#eef2f8; --soft:#c3cedd; --muted:#8495ac;
-    --accent:#35c892; --accent-soft:#8fe6c4; --accent-ink:#052a1d; --accent-wash:rgba(53,200,146,.10);
-    --danger:#ef7468; --warn:#e0b055;
-    --maxw:1140px;
+    --bg:#09090b;        /* zinc-950 */
+    --bg-2:#0e0e11;
+    --surface:#131316;   /* entre zinc-900/950 */
+    --surface-2:#18181b; /* zinc-900 */
+    --hair:rgba(255,255,255,.07);
+    --hair-2:rgba(255,255,255,.11);
+    --t1:#fafafa;        /* zinc-50 */
+    --t2:#a1a1aa;        /* zinc-400 */
+    --t3:#71717a;        /* zinc-500 */
+    --acc:#34d399;       /* emerald-400 */
+    --acc-2:#10b981;     /* emerald-500 */
+    --acc-dim:rgba(52,211,153,.12);
+    --red:#f87171; --amber:#fbbf24;
+    --max:1160px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;font-feature-settings:"cv05","ss01"}
+  body{background:var(--bg);color:var(--t1);font:16px/1.65 "Inter",system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   a{color:inherit;text-decoration:none}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
-  h1,h2,h3,.wm{font-family:"Schibsted Grotesk",system-ui,sans-serif;letter-spacing:-.02em;font-weight:700;line-height:1.05;color:var(--ink)}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:"Inter";font-weight:600;font-size:15px;padding:12px 22px;border-radius:9px;border:1px solid transparent;cursor:pointer;transition:background .14s,border-color .14s,color .14s,transform .14s}
-  .btn:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px}
-  .btn-primary{background:#f3f6fa;color:#0b1119}
-  .btn-primary:hover{background:#fff;transform:translateY(-1px)}
-  .btn-outline{background:transparent;color:var(--ink);border-color:var(--line-strong)}
-  .btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  .display,h1,h2,h3{font-family:"Inter Tight","Inter",sans-serif;color:var(--t1)}
+  :focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:6px}
 
-  header{position:sticky;top:0;z-index:50;background:rgba(11,17,25,.78);backdrop-filter:saturate(1.3) blur(12px);border-bottom:1px solid var(--line)}
-  nav{display:flex;align-items:center;justify-content:space-between;height:66px}
-  .wm{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700}
-  .wm svg{display:block}
-  .nav-r{display:flex;align-items:center;gap:26px}
-  .nav-r a.nl{color:var(--muted);font-size:14.5px;font-weight:500}
-  .nav-r a.nl:hover{color:var(--ink)}
-  @media(max-width:840px){.nav-r a.nl{display:none}}
+  /* Botões */
+  .btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border-radius:8px;font-weight:500;font-size:14.5px;transition:background .15s ease,border-color .15s ease,color .15s ease}
+  .btn-p{background:var(--t1);color:#09090b}
+  .btn-p:hover{background:#e4e4e7}
+  .btn-g{border:1px solid var(--hair-2);color:var(--t1);background:rgba(255,255,255,.02)}
+  .btn-g:hover{background:rgba(255,255,255,.06)}
+  .btn svg{opacity:.7}
 
-  .hero{padding:78px 0 44px;position:relative}
-  .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(900px 420px at 72% 18%,rgba(53,200,146,.09),transparent 70%);pointer-events:none}
-  .hero-grid{position:relative;display:grid;grid-template-columns:1.02fr .98fr;gap:60px;align-items:center}
-  @media(max-width:920px){.hero-grid{grid-template-columns:1fr;gap:46px}}
-  .pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--accent-soft);background:var(--accent-wash);border:1px solid rgba(53,200,146,.28);padding:6px 13px;border-radius:999px;margin-bottom:24px}
-  .pill svg{display:block}
-  h1{font-size:clamp(36px,5.4vw,56px);font-weight:800;letter-spacing:-.03em}
-  .hero .sub{color:var(--soft);font-size:clamp(17px,2vw,20px);margin:22px 0 32px;max-width:31em}
-  .cta-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-  .microtrust{margin-top:26px;display:flex;gap:22px;flex-wrap:wrap;color:var(--muted);font-size:13.5px}
-  .microtrust span{display:inline-flex;align-items:center;gap:7px}
-  .microtrust .c{color:var(--accent)}
+  /* Nav */
+  header{position:sticky;top:0;z-index:40;background:rgba(9,9,11,.72);backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid var(--hair)}
+  nav{height:62px;display:flex;align-items:center;justify-content:space-between}
+  .logo{display:flex;align-items:center;gap:9px;font-family:"Inter Tight";font-weight:600;font-size:17px;letter-spacing:-.01em}
+  .links{display:flex;gap:28px;font-size:14px;color:var(--t2)}
+  .links a:hover{color:var(--t1)}
+  .nav-cta{display:flex;gap:10px}
+  .nav-cta .btn{height:34px;padding:0 14px;font-size:13.5px}
+  @media(max-width:860px){.links{display:none}}
 
-  /* REPORT MOCK — cartão claro (parece um screenshot real) */
-  .mock{background:#ffffff;border:1px solid #e6ebf0;border-radius:16px;box-shadow:0 30px 60px -24px rgba(0,0,0,.55);overflow:hidden}
-  .mock-top{display:flex;align-items:center;gap:8px;padding:13px 18px;border-bottom:1px solid #eef1f5;background:#fbfcfd}
-  .mock-top .dots{display:flex;gap:6px}
-  .mock-top .dots i{width:10px;height:10px;border-radius:50%;background:#dfe5ec;display:block}
-  .mock-top .u{margin-left:10px;font-size:12.5px;color:#8696a7}
-  .mock-body{padding:22px}
-  .mock-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-  .mock-head .d{font-family:"Schibsted Grotesk";font-weight:600;font-size:17px;color:#0c1a28}
-  .chip-ok{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#0a5a3d;background:#e9f4ef;border:1px solid #cfe7dc;padding:4px 10px;border-radius:999px}
-  .grade{display:flex;align-items:center;gap:16px;padding:14px;border:1px solid #eef1f5;border-radius:12px;margin-bottom:8px;background:#fbfcfd}
-  .ring{width:56px;height:56px;flex:0 0 auto}
-  .grade .gt{font-size:13px;color:#8696a7}
-  .grade .gn{font-family:"Schibsted Grotesk";font-weight:700;font-size:19px;color:#0c1a28}
-  .rrow{display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid #eef1f5}
-  .rrow:last-child{border-bottom:none}
-  .sev{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;flex:0 0 auto;min-width:58px;text-align:center}
-  .sev.h{color:#fff;background:#d6453c}
-  .sev.m{color:#5a3f05;background:#f5e2b8}
-  .sev.l{color:#44546a;background:#eef1f5}
-  .rrow .rt{flex:1;font-size:14px;color:#1b2a3b}
-  .rrow .fix{font-size:12.5px;color:#0f7a52;font-weight:600}
+  /* Hero */
+  .hero{position:relative;padding:96px 0 0;text-align:center;isolation:isolate}
+  .hero::before{ /* grelha técnica a desvanecer */
+    content:"";position:absolute;inset:0 0 auto 0;height:720px;z-index:-2;
+    background-image:linear-gradient(var(--hair) 1px,transparent 1px),linear-gradient(90deg,var(--hair) 1px,transparent 1px);
+    background-size:56px 56px;
+    -webkit-mask-image:radial-gradient(ellipse 60% 55% at 50% 30%,#000 30%,transparent 75%);
+            mask-image:radial-gradient(ellipse 60% 55% at 50% 30%,#000 30%,transparent 75%);
+  }
+  .hero::after{ /* brilho esmeralda subtil */
+    content:"";position:absolute;left:50%;top:340px;width:900px;height:500px;transform:translateX(-50%);z-index:-1;
+    background:radial-gradient(closest-side,rgba(16,185,129,.18),transparent);filter:blur(20px);
+  }
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;height:30px;padding:0 12px 0 6px;border:1px solid var(--hair-2);border-radius:999px;font-size:13px;color:var(--t2);background:rgba(255,255,255,.02)}
+  .eyebrow b{font-weight:500;color:#09090b;background:var(--acc);border-radius:999px;padding:1px 8px;font-size:11.5px}
+  h1{font-size:clamp(40px,6.6vw,76px);line-height:1.02;letter-spacing:-.045em;font-weight:600;margin:26px auto 0;max-width:13ch}
+  h1 span{background:linear-gradient(180deg,#fafafa 30%,#a1a1aa);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{max-width:36rem;margin:22px auto 0;color:var(--t2);font-size:clamp(16px,1.6vw,18.5px)}
+  .hero-cta{display:flex;justify-content:center;gap:12px;margin-top:34px;flex-wrap:wrap}
+  .hero-note{margin-top:18px;font-size:13px;color:var(--t3)}
 
-  .strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg-elev)}
-  .strip .wrap{display:flex;align-items:center;gap:30px;flex-wrap:wrap;padding:20px 28px}
-  .strip .lbl{font-size:13px;color:var(--muted)}
-  .strip .items{display:flex;gap:26px;flex-wrap:wrap;color:var(--soft);font-weight:500;font-size:14.5px}
+  /* App mock (escuro, coerente com a marca) */
+  .stage{position:relative;margin:72px auto 0;max-width:1060px;padding:0 24px}
+  .app{border-radius:14px;border:1px solid var(--hair-2);background:linear-gradient(180deg,#16161a,#0f0f12);box-shadow:0 0 0 1px rgba(0,0,0,.6),0 40px 120px -30px rgba(16,185,129,.25),0 30px 60px -30px rgba(0,0,0,.9);overflow:hidden;text-align:left}
+  .app-bar{height:40px;display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid var(--hair)}
+  .app-bar i{width:10px;height:10px;border-radius:50%;background:#2a2a2f}
+  .app-bar .url{margin-left:12px;font:500 12px "JetBrains Mono",monospace;color:var(--t3);background:rgba(255,255,255,.03);border:1px solid var(--hair);border-radius:6px;padding:3px 10px}
+  .app-in{display:grid;grid-template-columns:200px 1fr}
+  .side{border-right:1px solid var(--hair);padding:16px 12px;font-size:13px;color:var(--t2)}
+  .side .it{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:7px}
+  .side .it.on{background:rgba(255,255,255,.05);color:var(--t1)}
+  .side .grp{font-size:11.5px;color:var(--t3);padding:14px 10px 6px}
+  .main{padding:22px 24px 8px}
+  .mhead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .mhead h4{font:600 18px "Inter Tight";letter-spacing:-.01em}
+  .ver{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--acc);background:var(--acc-dim);border:1px solid rgba(52,211,153,.25);border-radius:999px;padding:3px 10px}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+  .kpi{border:1px solid var(--hair);border-radius:10px;padding:14px;background:rgba(255,255,255,.015)}
+  .kpi .l{font-size:12px;color:var(--t3)}
+  .kpi .v{font:600 24px "Inter Tight";letter-spacing:-.02em;margin-top:2px;font-variant-numeric:tabular-nums}
+  .kpi .v small{font-size:13px;color:var(--t3);font-weight:500}
+  .bar{height:6px;border-radius:9px;background:rgba(255,255,255,.06);margin-top:10px;overflow:hidden}
+  .bar i{display:block;height:100%;width:72%;background:linear-gradient(90deg,var(--amber),var(--acc));border-radius:9px}
+  .rows{border-top:1px solid var(--hair)}
+  .row{display:grid;grid-template-columns:78px 1fr auto;align-items:center;gap:14px;padding:12px 2px;border-bottom:1px solid var(--hair);font-size:13.5px}
+  .row:last-child{border-bottom:0}
+  .sv{font-size:11px;font-weight:600;border-radius:5px;padding:3px 0;text-align:center}
+  .sv.c{color:#fecaca;background:rgba(248,113,113,.14);border:1px solid rgba(248,113,113,.3)}
+  .sv.m{color:#fde68a;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.28)}
+  .sv.b{color:var(--t2);background:rgba(255,255,255,.05);border:1px solid var(--hair)}
+  .row .fx{font-size:12.5px;color:var(--t3)}
+  .row .fx b{color:var(--acc);font-weight:500}
+  @media(max-width:760px){.app-in{grid-template-columns:1fr}.side{display:none}.kpis{grid-template-columns:1fr 1fr}.kpis .kpi:last-child{display:none}.row .fx{display:none}.row{grid-template-columns:70px 1fr}}
 
-  section{padding:84px 0}
-  h2{font-size:clamp(27px,3.6vw,38px);font-weight:700;max-width:16em}
-  .lede{color:var(--soft);font-size:18px;margin-top:14px;max-width:34em}
+  /* Secções */
+  section{padding:120px 0 0}
+  .sh{max-width:640px}
+  .sh .k{font:500 13px "JetBrains Mono",monospace;color:var(--acc);margin-bottom:14px}
+  h2{font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-.035em;font-weight:600}
+  .sh p{color:var(--t2);font-size:17.5px;margin-top:16px}
 
-  .tg{margin-top:52px;display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
-  @media(max-width:720px){.tg{grid-template-columns:1fr}}
-  .tcell{background:var(--surface);padding:28px}
-  .tcell .ic{color:var(--accent);margin-bottom:14px}
-  .tcell h3{font-size:17px;font-weight:600;font-family:"Inter";letter-spacing:-.01em;margin-bottom:6px}
-  .tcell p{color:var(--muted);font-size:14.5px}
+  /* Bento */
+  .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:56px}
+  .card{position:relative;border:1px solid var(--hair);border-radius:14px;background:linear-gradient(180deg,var(--surface),var(--bg-2));padding:28px;overflow:hidden}
+  .card h3{font-size:18px;font-weight:600;letter-spacing:-.015em;margin-top:18px}
+  .card p{color:var(--t2);font-size:14.5px;margin-top:8px;max-width:34ch}
+  .ico{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;border:1px solid var(--hair-2);background:rgba(255,255,255,.03);color:var(--acc)}
+  .c-a{grid-column:span 4}.c-b{grid-column:span 2}.c-c{grid-column:span 2}.c-d{grid-column:span 4}
+  @media(max-width:900px){.bento{grid-template-columns:1fr}.c-a,.c-b,.c-c,.c-d{grid-column:auto}}
+  /* mini-visual dentro dos cartões grandes */
+  .code{margin-top:22px;border:1px solid var(--hair);border-radius:10px;background:#0b0b0d;font:500 12.5px/1.75 "JetBrains Mono",monospace;color:var(--t3);padding:14px 16px;overflow:hidden;white-space:nowrap}
+  .code .r{color:var(--red)}.code .g{color:var(--acc)}.code .w{color:var(--t1)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .chip{font:500 12px "JetBrains Mono",monospace;color:var(--t2);border:1px solid var(--hair-2);border-radius:6px;padding:5px 9px;background:rgba(255,255,255,.02)}
+  .chip.ok{color:var(--acc);border-color:rgba(52,211,153,.3)}
+  .chip.no{color:var(--red);border-color:rgba(248,113,113,.3)}
 
-  .how{background:var(--bg-elev);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .hsteps{margin-top:52px;display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
-  @media(max-width:880px){.hsteps{grid-template-columns:1fr 1fr}}
-  @media(max-width:520px){.hsteps{grid-template-columns:1fr}}
-  .hstep .n{font-family:"Schibsted Grotesk";font-weight:700;font-size:15px;color:var(--accent);border:1.5px solid rgba(53,200,146,.35);background:var(--accent-wash);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
-  .hstep h3{font-size:17px;font-weight:600;font-family:"Inter";letter-spacing:-.01em;margin-bottom:6px}
-  .hstep p{color:var(--muted);font-size:14.5px}
+  /* Passos — linha temporal */
+  .tl{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:64px}
+  .tl::before{content:"";position:absolute;top:17px;left:18px;right:18px;height:1px;background:linear-gradient(90deg,var(--acc),var(--hair-2) 40%,var(--hair-2))}
+  .st .dot{position:relative;width:35px;height:35px;border-radius:50%;display:grid;place-items:center;background:var(--bg);border:1px solid var(--hair-2);font:600 13px "Inter Tight";color:var(--t2)}
+  .st:first-child .dot{border-color:var(--acc);color:var(--acc);box-shadow:0 0 0 4px var(--acc-dim)}
+  .st h3{font-size:16.5px;font-weight:600;margin-top:22px;letter-spacing:-.01em}
+  .st p{color:var(--t2);font-size:14.5px;margin-top:6px}
+  @media(max-width:860px){.tl{grid-template-columns:1fr 1fr}.tl::before{display:none}}
+  @media(max-width:520px){.tl{grid-template-columns:1fr}}
 
-  .pg{margin-top:52px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch}
-  @media(max-width:880px){.pg{grid-template-columns:1fr}}
-  .pc{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:28px}
-  .pc.hl{background:linear-gradient(180deg,var(--surface-2),var(--surface));border-color:rgba(53,200,146,.45);box-shadow:0 24px 60px -34px rgba(53,200,146,.35)}
-  .pc .nm{font-size:14px;font-weight:600;color:var(--soft)}
-  .pc .pr{font-family:"Schibsted Grotesk";font-weight:700;font-size:38px;margin:8px 0 2px;letter-spacing:-.02em;color:var(--ink)}
-  .pc .pr small{font-family:"Inter";font-size:14px;color:var(--muted);font-weight:500}
-  .pc .desc{color:var(--muted);font-size:13.5px;margin-bottom:18px}
-  .pc .tag{align-self:flex-start;font-size:11.5px;font-weight:700;color:var(--accent-ink);background:var(--accent);padding:4px 10px;border-radius:6px;margin-bottom:12px}
-  .pc ul{list-style:none;margin:4px 0 24px;flex:1}
-  .pc li{display:flex;gap:10px;align-items:flex-start;padding:6px 0;color:var(--soft);font-size:14px}
-  .pc li svg{flex:0 0 auto;margin-top:3px;color:var(--accent)}
-  .note{color:var(--muted);font-size:13px;margin-top:18px}
+  /* Preços */
+  .prices{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:56px}
+  @media(max-width:900px){.prices{grid-template-columns:1fr}}
+  .pl{border:1px solid var(--hair);border-radius:14px;padding:28px;background:var(--surface);display:flex;flex-direction:column}
+  .pl.hot{background:radial-gradient(120% 70% at 50% 0%,rgba(16,185,129,.14),transparent 60%),var(--surface);border-color:rgba(52,211,153,.35)}
+  .pl .n{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--t2);font-weight:500}
+  .pl .n em{font-style:normal;font-size:11.5px;color:#09090b;background:var(--acc);padding:2px 8px;border-radius:999px;font-weight:600}
+  .pl .p{font:600 44px/1 "Inter Tight";letter-spacing:-.04em;margin:22px 0 6px;font-variant-numeric:tabular-nums}
+  .pl .p small{font:500 14px "Inter";color:var(--t3);letter-spacing:0}
+  .pl .d{color:var(--t3);font-size:14px}
+  .pl ul{list-style:none;margin:24px 0 28px;padding-top:22px;border-top:1px solid var(--hair);flex:1}
+  .pl li{display:flex;gap:10px;font-size:14.5px;color:var(--t2);padding:5px 0}
+  .pl li svg{flex:none;margin-top:5px;color:var(--acc)}
+  .pl .btn{justify-content:center}
 
-  .guar{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:32px;background:var(--surface)}
-  @media(max-width:600px){.guar{grid-template-columns:1fr}}
-  .guar h3{font-size:22px}
-  .guar p{color:var(--soft);margin-top:9px;font-size:15.5px;max-width:46em}
+  /* Garantia + FAQ */
+  .split{display:grid;grid-template-columns:1fr 1.4fr;gap:64px}
+  @media(max-width:900px){.split{grid-template-columns:1fr;gap:32px}}
+  .faq details{border-bottom:1px solid var(--hair)}
+  .faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;padding:22px 0;font-weight:500;font-size:16.5px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary svg{flex:none;color:var(--t3);transition:transform .2s ease}
+  .faq details[open] summary svg{transform:rotate(45deg)}
+  .faq p{color:var(--t2);font-size:15px;padding:0 0 22px;max-width:60ch}
+  .faq details:first-child summary{padding-top:0}
+  .guard{margin-top:32px;border:1px solid var(--hair);border-radius:14px;padding:22px;background:var(--surface);display:flex;gap:14px}
+  .guard p{color:var(--t2);font-size:14px}
+  .guard strong{color:var(--t1);font-weight:600;display:block;margin-bottom:4px;font-size:15px}
 
-  .faq{margin-top:40px;border-top:1px solid var(--line)}
-  details{border-bottom:1px solid var(--line)}
-  summary{list-style:none;cursor:pointer;padding:20px 0;font-weight:600;font-size:17px;font-family:"Inter";display:flex;justify-content:space-between;align-items:center;gap:16px;color:var(--ink)}
-  summary::-webkit-details-marker{display:none}
-  summary .pm{color:var(--muted);transition:transform .2s;flex:0 0 auto}
-  details[open] summary .pm{transform:rotate(45deg)}
-  details p{color:var(--soft);padding:0 0 20px;font-size:15px;max-width:52em}
+  /* CTA final */
+  .end{margin:140px 0 0;position:relative;text-align:center;border:1px solid var(--hair);border-radius:20px;padding:84px 24px;overflow:hidden;background:var(--bg-2)}
+  .end::before{content:"";position:absolute;inset:auto 0 -60% 0;height:120%;background:radial-gradient(closest-side,rgba(16,185,129,.22),transparent);pointer-events:none}
+  .end h2{position:relative;max-width:16ch;margin:0 auto}
+  .end p{position:relative;color:var(--t2);margin:16px auto 32px;max-width:40ch;font-size:17px}
+  .end .hero-cta{position:relative;margin-top:0}
 
-  .final{text-align:center;background:linear-gradient(180deg,var(--surface-2),var(--surface));border:1px solid var(--line-strong);border-radius:20px;padding:60px 28px;margin:0 28px}
-  .final h2{margin:0 auto;max-width:15em}
-  .final p{color:var(--soft);font-size:18px;margin:14px auto 28px;max-width:34em}
+  footer{margin-top:96px;border-top:1px solid var(--hair);padding:40px 0 56px;color:var(--t3);font-size:13.5px}
+  .fg{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .fg nav{height:auto;display:flex;gap:22px}
+  .fg a:hover{color:var(--t1)}
 
-  footer{padding:46px 0 40px}
-  .fcols{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:30px}
-  .fcols .fb{max-width:22em}
-  .fcols p{color:var(--muted);font-size:14px;margin-top:10px}
-  .fcols .lbl{font-size:12.5px;color:var(--ink);font-weight:600;margin-bottom:10px}
-  .fcols a{display:block;color:var(--muted);font-size:14px;padding:3px 0}
-  .fcols a:hover{color:var(--ink)}
-  .copyright{color:var(--muted);font-size:13px;margin-top:30px}
+  @media (prefers-reduced-motion:no-preference){
+    .rise{opacity:0;transform:translateY(10px);animation:rise .8s cubic-bezier(.16,1,.3,1) forwards}
+    .r2{animation-delay:.08s}.r3{animation-delay:.16s}.r4{animation-delay:.28s}
+    @keyframes rise{to{opacity:1;transform:none}}
+  }
 </style>
 </head>
 <body>
@@ -145,191 +192,202 @@
 <header>
   <div class="wrap">
     <nav>
-      <a class="wm" href="#top">
-        <svg width="26" height="26" viewBox="0 0 32 32" fill="none"><path d="M16 2.5l10.5 3.8v8.3c0 6.8-4.4 11.9-10.5 14.2C9.9 26.5 5.5 21.4 5.5 14.6V6.3L16 2.5z" fill="#192538" stroke="#2d3c59" stroke-width="1"/><path d="M11 16l3.3 3.3L21.5 12" stroke="#35c892" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <a class="logo" href="#top">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.2l8 3v6.2c0 5.1-3.3 8.9-8 10.4-4.7-1.5-8-5.3-8-10.4V5.2l8-3z" fill="#fafafa"/><path d="M8.4 12.2l2.5 2.5 4.9-5" stroke="#09090b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Fortify
       </a>
-      <div class="nav-r">
-        <a class="nl" href="#risco">O que encontramos</a>
-        <a class="nl" href="#como">Como funciona</a>
-        <a class="nl" href="#precos">Preços</a>
-        <a class="nl" href="#faq">Perguntas</a>
-        <a href="plataforma.html" class="btn btn-outline" style="padding:9px 17px">Entrar</a>
+      <div class="links">
+        <a href="#servico">Serviço</a>
+        <a href="#processo">Processo</a>
+        <a href="#precos">Preços</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="nav-cta">
+        <a href="plataforma.html" class="btn btn-g">Entrar</a>
+        <a href="plataforma.html" class="btn btn-p">Começar</a>
       </div>
     </nav>
   </div>
 </header>
 
-<div id="top" class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <span class="pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 2.5v5.5c0 4.5-3 8-7 9.2-4-1.2-7-4.7-7-9.2V5.5L12 3z" stroke="#8fe6c4" stroke-width="1.6" stroke-linejoin="round"/></svg> Auditoria com autorização verificada</span>
-      <h1>A segurança do site da tua empresa, tratada a sério.</h1>
-      <p class="sub">Encontramos as fragilidades do teu site antes de quem tem más intenções — e entregamos um relatório claro, com a solução para cada uma.</p>
-      <div class="cta-row">
-        <a href="plataforma.html" class="btn btn-primary">Analisar o meu site</a>
-        <a href="#precos" class="btn btn-outline">Ver preços</a>
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <a href="#processo" class="eyebrow rise"><b>Novo</b> Verificação automática de domínio</a>
+      <h1 class="rise r2"><span>Encontra as falhas antes dos atacantes.</span></h1>
+      <p class="lead rise r3">A Fortify analisa o site da tua empresa e entrega um relatório claro com cada fragilidade, a gravidade e o passo a passo para a corrigir.</p>
+      <div class="hero-cta rise r4">
+        <a href="plataforma.html" class="btn btn-p">Analisar o meu site
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m-6-6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#precos" class="btn btn-g">Ver preços</a>
       </div>
-      <div class="microtrust">
-        <span><svg class="c" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Verificação de domínio</span>
-        <span><svg class="c" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> OWASP Top 10</span>
-        <span><svg class="c" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Conforme o RGPD</span>
-      </div>
+      <p class="hero-note rise r4">Desde 25€ · Só com autorização do dono · Conforme o RGPD</p>
     </div>
 
-    <div class="mock" aria-hidden="true">
-      <div class="mock-top"><span class="dots"><i></i><i></i><i></i></span><span class="u">fortify · relatório de segurança</span></div>
-      <div class="mock-body">
-        <div class="mock-head">
-          <span class="d">lojadaana.pt</span>
-          <span class="chip-ok"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Domínio verificado</span>
+    <div class="stage rise r4" aria-hidden="true">
+      <div class="app">
+        <div class="app-bar"><i></i><i></i><i></i><span class="url">app.fortify.pt/relatorios/lojadaana.pt</span></div>
+        <div class="app-in">
+          <div class="side">
+            <div class="it on"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4zM4 10h16" stroke="currentColor" stroke-width="1.7"/></svg> Relatórios</div>
+            <div class="it"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 4.5-3 8-7 9.5C8 19 5 15.5 5 11V6l7-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg> Domínios</div>
+            <div class="it"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M7 3h8l4 4v14H7zM15 3v4h4" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg> Contratos</div>
+            <div class="grp">Sites</div>
+            <div class="it on" style="background:none;color:var(--t1)">● lojadaana.pt</div>
+            <div class="it">○ clinica-sol.pt</div>
+          </div>
+          <div class="main">
+            <div class="mhead">
+              <h4>lojadaana.pt</h4>
+              <span class="ver"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg> Domínio verificado</span>
+            </div>
+            <div class="kpis">
+              <div class="kpi"><div class="l">Pontuação</div><div class="v">72<small> / 100</small></div><div class="bar"><i></i></div></div>
+              <div class="kpi"><div class="l">Falhas encontradas</div><div class="v">4</div></div>
+              <div class="kpi"><div class="l">Última análise</div><div class="v" style="font-size:18px;margin-top:6px">Hoje, 10:42</div></div>
+            </div>
+            <div class="rows">
+              <div class="row"><span class="sv c">Crítico</span><span>Formulário de contacto vulnerável a injeção SQL</span><span class="fx"><b>Ver correção</b></span></div>
+              <div class="row"><span class="sv m">Médio</span><span>Cabeçalhos de segurança em falta (CSP, HSTS)</span><span class="fx"><b>Ver correção</b></span></div>
+              <div class="row"><span class="sv m">Médio</span><span>Certificado SSL aceita protocolos antigos</span><span class="fx"><b>Ver correção</b></span></div>
+              <div class="row"><span class="sv b">Baixo</span><span>Versão do WordPress visível no código</span><span class="fx"><b>Ver correção</b></span></div>
+            </div>
+          </div>
         </div>
-        <div class="grade">
-          <svg class="ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5" fill="none" stroke="#eef1f5" stroke-width="4"/><circle cx="18" cy="18" r="15.5" fill="none" stroke="#bd8111" stroke-width="4" stroke-linecap="round" stroke-dasharray="97.4" stroke-dashoffset="30" transform="rotate(-90 18 18)"/><text x="18" y="22" text-anchor="middle" font-family="Schibsted Grotesk" font-size="12" font-weight="700" fill="#0c1a28">C</text></svg>
-          <div><div class="gt">Pontuação de segurança</div><div class="gn">72 / 100 — 4 falhas a corrigir</div></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="servico">
+    <div class="wrap">
+      <div class="sh">
+        <div class="k">O que analisamos</div>
+        <h2>As mesmas portas que um atacante tenta abrir.</h2>
+        <p>Um incidente numa PME custa dados de clientes, coimas do RGPD e dias sem vender. Testamos as entradas mais usadas e dizemos-te como fechá-las.</p>
+      </div>
+      <div class="bento">
+        <div class="card c-a">
+          <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M8 9l-4 3 4 3m8-6l4 3-4 3M14 5l-4 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Injeção e XSS</h3>
+          <p>Formulários e parâmetros que deixam manipular a base de dados ou atacar quem visita o site.</p>
+          <div class="code"><span class="w">POST</span> /contacto  email=<span class="r">' OR 1=1 --</span><br><span class="g">✓</span> Detetado · consulta sem parâmetros na linha 48 · <span class="g">correção incluída</span></div>
         </div>
-        <div class="rrow"><span class="sev h">Crítico</span><span class="rt">Formulário vulnerável a injeção SQL</span><span class="fix">Corrigir</span></div>
-        <div class="rrow"><span class="sev m">Médio</span><span class="rt">Cabeçalhos de segurança em falta</span><span class="fix">Corrigir</span></div>
-        <div class="rrow"><span class="sev m">Médio</span><span class="rt">Certificado SSL mal configurado</span><span class="fix">Corrigir</span></div>
-        <div class="rrow"><span class="sev l">Baixo</span><span class="rt">Versão do WordPress exposta</span><span class="fix">Corrigir</span></div>
+        <div class="card c-b">
+          <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.8"/></svg></div>
+          <h3>Logins e acessos</h3>
+          <p>Palavras-passe fracas, sessões mal protegidas e painéis de administração à vista.</p>
+        </div>
+        <div class="card c-c">
+          <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l5 5v13H7zM14 3v5h5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+          <h3>Ficheiros expostos</h3>
+          <p>Backups, chaves e configurações que ficaram acessíveis ao público sem ninguém reparar.</p>
+        </div>
+        <div class="card c-d">
+          <div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 3v5.5c0 4.7-3.2 8.2-8 9.5-4.8-1.3-8-4.8-8-9.5V6l8-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+          <h3>SSL e cabeçalhos</h3>
+          <p>Verificamos a ligação segura e as proteções que o navegador devia estar a aplicar.</p>
+          <div class="chips"><span class="chip ok">HTTPS ✓</span><span class="chip ok">TLS 1.3 ✓</span><span class="chip no">HSTS ✕</span><span class="chip no">CSP ✕</span><span class="chip ok">X-Frame ✓</span><span class="chip">Referrer-Policy</span></div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<div class="strip">
-  <div class="wrap">
-    <span class="lbl">Feito para quem vive do seu site:</span>
-    <div class="items">
-      <span>Lojas online</span><span>Clínicas</span><span>Escritórios</span><span>Restaurantes</span><span>Imobiliárias</span>
-    </div>
-  </div>
-</div>
-
-<section id="risco">
-  <div class="wrap">
-    <h2>O que deixa um site aberto a um ataque</h2>
-    <p class="lede">Um incidente numa pequena empresa custa dados de clientes, coimas do RGPD e dias sem vender. Procuramos as entradas mais usadas por atacantes e mostramos-te como fechá-las.</p>
-    <div class="tg">
-      <div class="tcell"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><h3>Injeção e XSS</h3><p>Falhas que permitem manipular a tua base de dados ou atacar os teus visitantes através do site.</p></div>
-      <div class="tcell"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.8"/></svg></div><h3>Logins e permissões</h3><p>Palavras-passe fracas e acessos mal configurados que abrem a porta a quem não devia entrar.</p></div>
-      <div class="tcell"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l8 3v5.5c0 4.7-3.2 8.2-8 9.5-4.8-1.3-8-4.8-8-9.5V6l8-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div><h3>SSL e cabeçalhos</h3><p>Ligações inseguras e proteções em falta que facilitam a interceção de dados.</p></div>
-      <div class="tcell"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 3h7l5 5v13H7z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5" stroke="currentColor" stroke-width="1.8"/></svg></div><h3>Ficheiros expostos</h3><p>Backups, chaves e configurações acessíveis publicamente sem que te apercebas.</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="como" class="how">
-  <div class="wrap">
-    <h2>Como funciona</h2>
-    <p class="lede">Sempre com o teu aval. Nunca testamos um site sem autorização verificada do dono.</p>
-    <div class="hsteps">
-      <div class="hstep"><div class="n">1</div><h3>Provas que é teu</h3><p>Confirmas a posse do domínio num passo, por DNS ou ficheiro. É o que torna tudo legítimo.</p></div>
-      <div class="hstep"><div class="n">2</div><h3>Assinas a autorização</h3><p>Assinas no ecrã, com o rato ou o dedo. Fica registado e dentro da lei.</p></div>
-      <div class="hstep"><div class="n">3</div><h3>Analisamos o site</h3><p>Testamos a fundo, numa janela combinada, sem afetar o funcionamento do negócio.</p></div>
-      <div class="hstep"><div class="n">4</div><h3>Corriges com o relatório</h3><p>Recebes cada falha com a gravidade e o passo-a-passo para a resolver.</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="precos">
-  <div class="wrap">
-    <h2>Preços claros, sem surpresas</h2>
-    <p class="lede">Começa com uma análise rápida e sobe quando quiseres proteção contínua.</p>
-    <div class="pg">
-      <div class="pc">
-        <div class="nm">Check-up</div>
-        <div class="pr">25€ <small>/ único</small></div>
-        <div class="desc">A primeira análise, rápida e segura.</div>
-        <ul>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Cabeçalhos e SSL</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Ficheiros e dados expostos</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Relatório resumido</li>
-        </ul>
-        <a href="plataforma.html" class="btn btn-outline" style="width:100%">Começar</a>
+  <section id="processo">
+    <div class="wrap">
+      <div class="sh">
+        <div class="k">Processo</div>
+        <h2>Legal do primeiro ao último passo.</h2>
+        <p>Nunca testamos um site sem autorização verificada do dono. É isso que separa uma auditoria de um ataque.</p>
       </div>
-      <div class="pc hl">
-        <span class="tag">Mais escolhido</span>
-        <div class="nm">Auditoria completa</div>
-        <div class="pr">60€ <small>/ projeto</small></div>
-        <div class="desc">A proteção a sério, do início ao fim.</div>
-        <ul>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Tudo do Check-up</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> OWASP Top 10 completo</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Testes de login e acessos</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Relatório detalhado + reunião</li>
-        </ul>
-        <a href="plataforma.html" class="btn btn-primary" style="width:100%">Pedir auditoria</a>
-      </div>
-      <div class="pc">
-        <div class="nm">Monitorização</div>
-        <div class="pr">15€ <small>/ mês</small></div>
-        <div class="desc">Vigilância contínua ao longo do tempo.</div>
-        <ul>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Re-análise mensal</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Alertas de novas falhas</li>
-          <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Apoio prioritário</li>
-        </ul>
-        <a href="plataforma.html" class="btn btn-outline" style="width:100%">Subscrever</a>
+      <div class="tl">
+        <div class="st"><div class="dot">1</div><h3>Provas que o site é teu</h3><p>Adicionas um registo DNS ou um ficheiro. A plataforma confirma sozinha.</p></div>
+        <div class="st"><div class="dot">2</div><h3>Assinas a autorização</h3><p>Desenhas a assinatura no ecrã. O contrato fica guardado.</p></div>
+        <div class="st"><div class="dot">3</div><h3>Analisamos</h3><p>Testamos numa janela combinada, sem parar o teu negócio.</p></div>
+        <div class="st"><div class="dot">4</div><h3>Recebes o relatório</h3><p>Cada falha com gravidade, prova e a correção explicada.</p></div>
       </div>
     </div>
-    <p class="note">Valores indicativos. O preço final depende do tamanho e da complexidade do site.</p>
-  </div>
-</section>
+  </section>
 
-<section>
-  <div class="wrap">
-    <div class="guar">
-      <svg width="50" height="50" viewBox="0 0 32 32" fill="none"><path d="M16 2.5l10.5 3.8v8.3c0 6.8-4.4 11.9-10.5 14.2C9.9 26.5 5.5 21.4 5.5 14.6V6.3L16 2.5z" fill="#152133" stroke="#35c892" stroke-width="1.1"/><path d="M11 16l3.3 3.3L21.5 12" stroke="#35c892" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <section id="precos">
+    <div class="wrap">
+      <div class="sh">
+        <div class="k">Preços</div>
+        <h2>Simples. Sem letras pequenas.</h2>
+        <p>Começa com um check-up e passa para proteção contínua quando fizer sentido.</p>
+      </div>
+      <div class="prices">
+        <div class="pl">
+          <div class="n">Check-up</div>
+          <div class="p">25€ <small>uma vez</small></div>
+          <div class="d">Análise rápida e não intrusiva.</div>
+          <ul>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>SSL e cabeçalhos de segurança</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Ficheiros e dados expostos</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Relatório resumido</li>
+          </ul>
+          <a href="plataforma.html" class="btn btn-g">Começar check-up</a>
+        </div>
+        <div class="pl hot">
+          <div class="n">Auditoria completa <em>Mais escolhido</em></div>
+          <div class="p">60€ <small>por site</small></div>
+          <div class="d">A análise a fundo, do início ao fim.</div>
+          <ul>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Tudo o que está no Check-up</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Testes OWASP Top 10</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Logins, sessões e permissões</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Relatório detalhado e reunião</li>
+          </ul>
+          <a href="plataforma.html" class="btn btn-p">Pedir auditoria</a>
+        </div>
+        <div class="pl">
+          <div class="n">Monitorização</div>
+          <div class="p">15€ <small>/ mês</small></div>
+          <div class="d">Vigilância contínua do site.</div>
+          <ul>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Nova análise todos os meses</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Alerta quando surge uma falha</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4 10-10" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Apoio prioritário</li>
+          </ul>
+          <a href="plataforma.html" class="btn btn-g">Subscrever</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap split">
       <div>
-        <h3>Ética e legalidade, sem exceções</h3>
-        <p>Só analisamos sites com autorização escrita do dono, confirmada por controlo do domínio. Cumprimos o RGPD, tratamos tudo com total confidencialidade e nunca divulgamos as falhas que encontramos.</p>
+        <div class="sh"><div class="k">Perguntas</div><h2>O que nos perguntam mais.</h2></div>
+        <div class="guard">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="flex:none;color:var(--acc)"><path d="M12 3l8 3v5.5c0 4.7-3.2 8.2-8 9.5-4.8-1.3-8-4.8-8-9.5V6l8-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 12l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p><strong>Confidencialidade total</strong>As falhas que encontramos são só tuas. Nunca as divulgamos e apagamos os dados no fim do trabalho.</p>
+        </div>
+      </div>
+      <div class="faq">
+        <details open><summary>Preciso de perceber de informática?<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary><p>Não. O relatório está em linguagem simples, com o passo a passo para cada correção. Se tiveres um técnico ou uma agência, podes enviar-lhes o relatório tal como está.</p></details>
+        <details><summary>A análise pode partir o meu site?<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary><p>Não fazemos testes destrutivos nem ataques de negação de serviço, e não alteramos os teus dados. Mesmo assim, recomendamos ter uma cópia de segurança recente antes de começar.</p></details>
+        <details><summary>Como provo que o site é meu?<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary><p>Adicionas um registo TXT no DNS do domínio ou colocas um ficheiro nosso na raiz do site. A plataforma verifica automaticamente — é o mesmo método que o Google usa.</p></details>
+        <details><summary>Quanto tempo demora?<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></summary><p>O Check-up fica pronto no mesmo dia. A auditoria completa demora entre dois e cinco dias, conforme o tamanho do site.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="end">
+      <h2>Sabe hoje o que um atacante veria amanhã.</h2>
+      <p>Cria a conta, verifica o domínio e recebe o primeiro relatório no mesmo dia.</p>
+      <div class="hero-cta">
+        <a href="plataforma.html" class="btn btn-p">Analisar o meu site</a>
+        <a href="#precos" class="btn btn-g">Ver preços</a>
       </div>
     </div>
   </div>
-</section>
-
-<section id="faq">
-  <div class="wrap">
-    <h2>Perguntas frequentes</h2>
-    <div class="faq">
-      <details open><summary>Preciso de perceber de informática?<span class="pm"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></summary><p>Não. Tratamos da parte técnica e entregamos o relatório em linguagem simples, com o passo-a-passo para corrigir. Se tiveres um técnico ou agência, o relatório serve-lhes diretamente.</p></details>
-      <details><summary>É seguro? Não vão partir o meu site?<span class="pm"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></summary><p>Trabalhamos com cuidado profissional e evitamos qualquer teste destrutivo. Nunca fazemos ataques de negação de serviço nem alteramos os teus dados. Recomendamos sempre teres uma cópia de segurança atualizada antes de começarmos.</p></details>
-      <details><summary>Como provo que o site é meu?<span class="pm"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></summary><p>Num passo simples: adicionas um registo no DNS do domínio ou colocas um ficheiro nosso na raiz do site. A plataforma confirma automaticamente. É o mesmo método que o Google usa para verificar sites.</p></details>
-      <details><summary>Quanto tempo demora?<span class="pm"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></summary><p>O Check-up fica pronto no mesmo dia. A auditoria completa demora, em geral, de dois a cinco dias, conforme o tamanho do site.</p></details>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="final">
-    <h2>Não esperes por um ataque para pensar na segurança.</h2>
-    <p>Verifica o teu site e recebe um plano claro para o proteger.</p>
-    <a href="plataforma.html" class="btn btn-primary">Analisar o meu site</a>
-  </div>
-</section>
+</main>
 
 <footer>
-  <div class="wrap">
-    <div class="fcols">
-      <div class="fb">
-        <a class="wm" href="#top" style="font-size:19px"><svg width="24" height="24" viewBox="0 0 32 32" fill="none"><path d="M16 2.5l10.5 3.8v8.3c0 6.8-4.4 11.9-10.5 14.2C9.9 26.5 5.5 21.4 5.5 14.6V6.3L16 2.5z" fill="#192538" stroke="#2d3c59" stroke-width="1"/><path d="M11 16l3.3 3.3L21.5 12" stroke="#35c892" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Fortify</a>
-        <p>Auditoria de segurança para pequenas e médias empresas em Portugal.</p>
-      </div>
-      <div>
-        <div class="lbl">Serviço</div>
-        <a href="#risco">O que encontramos</a>
-        <a href="#como">Como funciona</a>
-        <a href="#precos">Preços</a>
-      </div>
-      <div>
-        <div class="lbl">Começar</div>
-        <a href="plataforma.html">Criar conta</a>
-        <a href="plataforma.html">Entrar</a>
-        <a href="#faq">Perguntas frequentes</a>
-      </div>
-    </div>
-    <div class="copyright">© 2026 Fortify · Testes apenas com autorização do proprietário · Conforme o RGPD</div>
+  <div class="wrap fg">
+    <span>© 2026 Fortify · Auditoria de segurança para PME em Portugal</span>
+    <nav><a href="#servico">Serviço</a><a href="#precos">Preços</a><a href="#faq">FAQ</a><a href="plataforma.html">Entrar</a></nav>
   </div>
 </footer>
 
