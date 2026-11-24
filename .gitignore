@@ -7,3 +7,4 @@ dist/
 local/
 # Capturas da revisão de design (mostram nomes de outros jogadores)
 .impeccable/review/
+.netlify
