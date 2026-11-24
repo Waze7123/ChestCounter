@@ -172,6 +172,7 @@ async function boot(){
   if(!session){ me=null; render('auth'); return; }
   const { data:prof } = await sb.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
   me = { id: session.user.id, email: session.user.email, name: prof?.name || '', is_admin: !!prof?.is_admin };
+  if(!me.is_admin && prefill()){ draft={ site: prefill() }; clearPrefill(); render('onboard'); return; }
   render(me.is_admin ? 'admin' : 'dash');
 }
 
@@ -192,7 +193,7 @@ window.go = render;
 function viewAuth(){
   return `<div class="center" style="margin:60px auto 0">
     <h1><span class="dot"></span> Fortify</h1>
-    <p class="muted" style="margin-top:6px">Cria a tua conta grátis e começa a proteger o teu site.</p>
+    <p class="muted" style="margin-top:6px">${prefill() ? 'Cria a tua conta grátis para analisar <b style="color:var(--txt)">'+esc(prefill().replace(/^https?:\/\//,''))+'</b>.' : 'Cria a tua conta grátis e começa a proteger o teu site.'}</p>
     <div class="panel">
       <div class="tabs">
         <div class="tab on" id="tabReg" onclick="switchAuth('reg')">Criar conta</div>
@@ -270,7 +271,16 @@ async function viewDash(){
      ${rows}
    </table></div>`;
 }
-window.startDraft = () => { draft={}; render('onboard'); };
+window.startDraft = () => { draft={ site: prefill() }; render('onboard'); };
+// Domínio vindo da página principal (?site=... ou localStorage)
+function prefill(){
+  try{
+    const q=new URLSearchParams(location.search).get('site');
+    const v=q ? 'https://'+q.replace(/^https?:\/\//i,'') : localStorage.getItem('fortify_site_prefill');
+    return v||'';
+  }catch(e){ return ''; }
+}
+function clearPrefill(){ try{ localStorage.removeItem('fortify_site_prefill'); history.replaceState(null,'',location.pathname); }catch(e){} }
 
 /* ---------- ONBOARDING ---------- */
 function viewOnboard(){
