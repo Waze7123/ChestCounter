@@ -22,6 +22,7 @@
   .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .btn{background:var(--accent);color:#05231a;font-weight:700;border:none;padding:12px 22px;border-radius:999px;font-size:15px;cursor:pointer;transition:transform .12s}
   .btn:hover{transform:translateY(-1px)}
+  .btn:disabled{opacity:.6;cursor:wait}
   .btn.full{width:100%}
   .btn.sec{background:transparent;color:var(--txt);border:1px solid var(--line)}
   .btn.sm{padding:8px 16px;font-size:13px}
@@ -54,46 +55,50 @@
   table.mini{width:100%;border-collapse:collapse;margin:8px 0}
   table.mini td{border:1px solid var(--line);padding:6px 9px;font-size:13px}
   table.mini td:first-child{color:var(--muted);width:120px}
-  /* contract preview */
   #contractDoc{background:#fff;color:#1a1a1a;border-radius:9px;padding:30px;font-size:12.5px;line-height:1.55;max-height:340px;overflow:auto}
   #contractDoc h4{font-size:15px;text-align:center;margin-bottom:10px}
   #contractDoc h5{font-size:13px;margin:12px 0 4px;border-bottom:1px solid #eee}
-  #contractDoc .sig{height:60px}
+  .spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle}
+  @keyframes sp{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
-<div class="wrap" id="app"></div>
+<div class="wrap" id="app"><p class="muted" style="margin-top:40px">A carregar…</p></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/supabase-js/2.39.3/supabase.min.js"></script>
 <script>
-const $ = s => document.querySelector(s);
-const DB = {
-  users(){return JSON.parse(localStorage.getItem('fortify_users')||'[]')},
-  saveUsers(u){localStorage.setItem('fortify_users',JSON.stringify(u))},
-  contracts(){return JSON.parse(localStorage.getItem('fortify_contracts')||'[]')},
-  saveContracts(c){localStorage.setItem('fortify_contracts',JSON.stringify(c))},
-  session(){return JSON.parse(localStorage.getItem('fortify_session')||'null')},
-  setSession(s){localStorage.setItem('fortify_session',JSON.stringify(s))}
-};
-let draft = {};      // dados em construção
-let sigPad = null;   // instância assinatura
+const SUPABASE_URL = "https://xfavdiwdukzgmpiiigac.supabase.co";
+const SUPABASE_KEY = "sb_publishable_o2dfHvoDseiCVv1kvWDn8w_RDPX_bVK";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-function token(){return 'fortify-verify-'+Math.random().toString(36).slice(2,10)}
-function uid(){return 'C'+Date.now().toString(36).toUpperCase()}
+const $ = s => document.querySelector(s);
+let draft = {};
+let sigPad = null;
+let me = null;      // { id, email, name, is_admin }
+
+const token = () => 'fortify-verify-' + Math.random().toString(36).slice(2,10);
+
+/* ---------- SESSION BOOT ---------- */
+async function boot(){
+  const { data:{ session } } = await sb.auth.getSession();
+  if(!session){ me=null; render('auth'); return; }
+  const { data:prof } = await sb.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+  me = { id: session.user.id, email: session.user.email, name: prof?.name || '', is_admin: !!prof?.is_admin };
+  render(me.is_admin ? 'admin' : 'dash');
+}
 
 /* ---------- ROUTING ---------- */
-function go(view){ render(view); }
 function render(view){
-  const s = DB.session();
-  if(!view) view = s ? (s.admin?'admin':'dash') : 'auth';
   const app = $('#app');
-  if(view==='auth') return app.innerHTML = viewAuth();
-  if(!s){ return app.innerHTML = viewAuth(); }
-  if(view==='dash') { app.innerHTML = viewDash(); return; }
-  if(view==='admin'){ app.innerHTML = viewAdmin(); return; }
-  if(view==='onboard'){ app.innerHTML = viewOnboard(); bindOnboard(); return; }
-  if(view==='verify'){ app.innerHTML = viewVerify(); return; }
-  if(view==='sign'){ app.innerHTML = viewSign(); initSig(); renderContract(); return; }
+  if(view==='auth')    return app.innerHTML = viewAuth();
+  if(!me)              return app.innerHTML = viewAuth();
+  if(view==='dash')    return void viewDash();
+  if(view==='admin')   return void viewAdmin();
+  if(view==='onboard'){ app.innerHTML = viewOnboard(); return; }
+  if(view==='verify'){  app.innerHTML = viewVerify(); return; }
+  if(view==='sign'){    app.innerHTML = viewSign(); initSig(); renderContract(); return; }
 }
+window.go = render;
 
 /* ---------- AUTH ---------- */
 function viewAuth(){
@@ -108,57 +113,66 @@ function viewAuth(){
       <div id="regForm">
         <div class="field"><label>Nome</label><input id="r_name" placeholder="O teu nome"></div>
         <div class="field"><label>Email</label><input id="r_email" type="email" placeholder="email@empresa.pt"></div>
-        <div class="field"><label>Palavra-passe</label><input id="r_pass" type="password"></div>
-        <button class="btn full" onclick="register()">Criar conta grátis</button>
+        <div class="field"><label>Palavra-passe</label><input id="r_pass" type="password" placeholder="mín. 6 caracteres"></div>
+        <button class="btn full" id="regBtn" onclick="register()">Criar conta grátis</button>
         <div class="err hidden" id="regErr"></div>
+        <div class="ok hidden" id="regOk"></div>
       </div>
       <div id="logForm" class="hidden">
         <div class="field"><label>Email</label><input id="l_email" type="email"></div>
         <div class="field"><label>Palavra-passe</label><input id="l_pass" type="password"></div>
-        <button class="btn full" onclick="login()">Entrar</button>
+        <button class="btn full" id="logBtn" onclick="login()">Entrar</button>
         <div class="err hidden" id="logErr"></div>
       </div>
     </div>
-    <p class="note" style="text-align:center">Protótipo — dados guardados só neste navegador. · <a onclick="adminLogin()">Área Admin (dono)</a></p>
+    <p class="note" style="text-align:center">Plataforma real — as tuas contas e contratos ficam guardados em servidor seguro.</p>
   </div>`;
 }
-function switchAuth(t){
+window.switchAuth = t => {
   $('#tabReg').classList.toggle('on',t==='reg');$('#tabLog').classList.toggle('on',t==='log');
   $('#regForm').classList.toggle('hidden',t!=='reg');$('#logForm').classList.toggle('hidden',t!=='log');
-}
-function register(){
+};
+window.register = async () => {
   const name=$('#r_name').value.trim(), email=$('#r_email').value.trim().toLowerCase(), pass=$('#r_pass').value;
+  hide('regErr'); hide('regOk');
   if(!name||!email||!pass) return showErr('regErr','Preenche todos os campos.');
-  let users=DB.users();
-  if(users.find(u=>u.email===email)) return showErr('regErr','Já existe conta com este email.');
-  users.push({name,email,pass}); DB.saveUsers(users);
-  DB.setSession({name,email,admin:false}); go('dash');
-}
-function login(){
+  const btn=$('#regBtn'); btn.disabled=true; btn.textContent='A criar…';
+  const { data, error } = await sb.auth.signUp({ email, password:pass, options:{ data:{ name } } });
+  btn.disabled=false; btn.textContent='Criar conta grátis';
+  if(error) return showErr('regErr', error.message);
+  if(data.session){ await boot(); }
+  else { showOk('regOk','✓ Conta criada! Confirma o email na tua caixa de entrada e depois entra.'); switchAuth('log'); }
+};
+window.login = async () => {
   const email=$('#l_email').value.trim().toLowerCase(), pass=$('#l_pass').value;
-  const u=DB.users().find(u=>u.email===email&&u.pass===pass);
-  if(!u) return showErr('logErr','Email ou palavra-passe errados.');
-  DB.setSession({name:u.name,email:u.email,admin:false}); go('dash');
-}
-function adminLogin(){ DB.setSession({name:'Admin Fortify',email:'admin',admin:true}); go('admin'); }
-function logout(){ localStorage.removeItem('fortify_session'); go('auth'); }
+  hide('logErr');
+  const btn=$('#logBtn'); btn.disabled=true; btn.textContent='A entrar…';
+  const { error } = await sb.auth.signInWithPassword({ email, password:pass });
+  btn.disabled=false; btn.textContent='Entrar';
+  if(error) return showErr('logErr','Email ou palavra-passe errados (ou email por confirmar).');
+  await boot();
+};
+window.logout = async () => { await sb.auth.signOut(); me=null; render('auth'); };
 function showErr(id,msg){const e=$('#'+id);e.textContent=msg;e.classList.remove('hidden');}
+function showOk(id,msg){const e=$('#'+id);e.textContent=msg;e.classList.remove('hidden');}
+function hide(id){$('#'+id)?.classList.add('hidden');}
+
+/* ---------- TOPBAR ---------- */
+function topbar(extra=''){
+  return `<div class="topbar"><h1><span class="dot"></span> Fortify</h1>
+    <nav><span class="muted">${me.name||me.email}</span>${me.is_admin?' <a onclick="go(\\'admin\\')">Admin</a> <a onclick="go(\\'dash\\')">Cliente</a>':''}${extra}<a onclick="logout()">Sair</a></nav></div>`;
+}
 
 /* ---------- CLIENT DASHBOARD ---------- */
-function topbar(extra=''){
-  const s=DB.session();
-  return `<div class="topbar"><h1><span class="dot"></span> Fortify</h1>
-    <nav><span class="muted">${s.name}</span>${extra}<a onclick="logout()">Sair</a></nav></div>`;
-}
-function viewDash(){
-  const s=DB.session();
-  const mine=DB.contracts().filter(c=>c.userEmail===s.email);
-  const rows = mine.length ? mine.map(c=>`<tr><td>${c.id}</td><td>${c.empresa||'—'}</td><td>${c.site||'—'}</td>
+async function viewDash(){
+  $('#app').innerHTML = topbar() + `<div class="panel"><p class="muted">A carregar contratos…</p></div>`;
+  const { data:mine } = await sb.from('contracts').select('*').eq('user_id', me.id).order('created_at',{ascending:false});
+  const rows = (mine&&mine.length) ? mine.map(c=>`<tr><td>${c.id.slice(0,8)}</td><td>${esc(c.empresa)}</td><td>${esc(c.site)}</td>
      <td><span class="badge ${c.verified?'ok':'wait'}">${c.verified?'Site verificado':'Não verificado'}</span></td>
      <td>${c.signed?'<span class="badge ok">Assinado</span>':'<span class="badge wait">Pendente</span>'}</td>
-     <td>${new Date(c.date).toLocaleDateString('pt-PT')}</td></tr>`).join('')
+     <td>${new Date(c.created_at).toLocaleDateString('pt-PT')}</td></tr>`).join('')
      : `<tr><td colspan="6" class="muted">Ainda não tens contratos. Começa um novo!</td></tr>`;
-  return topbar() + `
+  $('#app').innerHTML = topbar() + `
    <div class="panel" style="display:flex;justify-content:space-between;align-items:center">
      <div><h2 style="font-size:18px">Os teus contratos</h2><p class="muted">Autoriza a análise de segurança do teu site.</p></div>
      <button class="btn" onclick="startDraft()">+ Novo contrato</button>
@@ -168,7 +182,7 @@ function viewDash(){
      ${rows}
    </table></div>`;
 }
-function startDraft(){ draft={}; go('onboard'); }
+window.startDraft = () => { draft={}; render('onboard'); };
 
 /* ---------- ONBOARDING ---------- */
 function viewOnboard(){
@@ -177,13 +191,13 @@ function viewOnboard(){
    <div class="panel">
      <h2 style="font-size:18px">1. Dados da empresa</h2>
      <p class="muted" style="margin-bottom:14px">Preenche os dados de quem autoriza a auditoria.</p>
-     <div class="field"><label>Nome da empresa</label><input id="o_empresa" value="${draft.empresa||''}"></div>
+     <div class="field"><label>Nome da empresa</label><input id="o_empresa" value="${esc(draft.empresa)}"></div>
      <div class="row">
-       <div class="field"><label>NIF</label><input id="o_nif" value="${draft.nif||''}"></div>
-       <div class="field"><label>Representante (teu nome)</label><input id="o_rep" value="${draft.rep||''}"></div>
+       <div class="field"><label>NIF</label><input id="o_nif" value="${esc(draft.nif)}"></div>
+       <div class="field"><label>Representante (teu nome)</label><input id="o_rep" value="${esc(draft.rep)}"></div>
      </div>
-     <div class="field"><label>Website a analisar</label><input id="o_site" placeholder="https://..." value="${draft.site||''}"></div>
-     <div class="field"><label>Email / Telefone de contacto</label><input id="o_contacto" value="${draft.contacto||''}"></div>
+     <div class="field"><label>Website a analisar</label><input id="o_site" placeholder="https://..." value="${esc(draft.site)}"></div>
+     <div class="field"><label>Email / Telefone de contacto</label><input id="o_contacto" value="${esc(draft.contacto)}"></div>
      <div class="info">☑️ Ao avançar, declaras que és o dono do site/empresa ou que tens autoridade para autorizar a análise.</div>
      <div class="field"><label><input type="checkbox" id="o_decl" style="width:auto"> Confirmo que tenho autoridade para autorizar.</label></div>
      <div style="display:flex;gap:10px;margin-top:6px">
@@ -193,24 +207,24 @@ function viewOnboard(){
      <div class="err hidden" id="obErr"></div>
    </div>`;
 }
-function bindOnboard(){}
-function saveOnboard(){
+window.saveOnboard = () => {
   draft.empresa=$('#o_empresa').value.trim(); draft.nif=$('#o_nif').value.trim();
   draft.rep=$('#o_rep').value.trim(); draft.site=$('#o_site').value.trim(); draft.contacto=$('#o_contacto').value.trim();
   if(!draft.empresa||!draft.site||!draft.rep) return showErr('obErr','Preenche empresa, website e representante.');
   if(!$('#o_decl').checked) return showErr('obErr','Tens de confirmar a autoridade para autorizar.');
   if(!draft.vtoken) draft.vtoken = token();
-  go('verify');
-}
+  render('verify');
+};
 
 /* ---------- VERIFICATION ---------- */
+function hostOf(site){ try{ return new URL(site.startsWith('http')?site:'https://'+site).hostname; }catch(e){ return 'o-teu-site.pt'; } }
 function viewVerify(){
-  let host='o-teu-site.pt'; try{ host=new URL(draft.site.startsWith('http')?draft.site:'https://'+draft.site).hostname; }catch(e){}
+  const host=hostOf(draft.site);
   return topbar() + `
    <div class="steps"><div class="s on"></div><div class="s on"></div><div class="s"></div></div>
    <div class="panel">
      <h2 style="font-size:18px">2. Prova que o site é teu</h2>
-     <p class="muted" style="margin-bottom:12px">Escolhe um método. Isto confirma que controlas <b>${host}</b> — é o que torna a análise legítima.</p>
+     <p class="muted" style="margin-bottom:12px">Escolhe um método. Isto confirma que controlas <b>${host}</b> — é o que torna a análise legítima. O sistema verifica <b>automaticamente</b>.</p>
      <div class="tabs">
        <div class="tab on" id="mDns" onclick="vmethod('dns')">Registo DNS</div>
        <div class="tab" id="mFile" onclick="vmethod('file')">Ficheiro no servidor</div>
@@ -227,15 +241,14 @@ function viewVerify(){
            <li>Clica em <b>"Adicionar registo"</b> e preenche:
              <table class="mini">
                <tr><td>Tipo</td><td><b>TXT</b></td></tr>
-               <tr><td>Nome / Host</td><td><b>@</b> &nbsp;(ou deixa vazio = o domínio principal)</td></tr>
+               <tr><td>Nome / Host</td><td><b>@</b> &nbsp;(ou vazio = domínio principal)</td></tr>
                <tr><td>Valor / Conteúdo</td><td>o código copiado acima</td></tr>
-               <tr><td>TTL</td><td>deixa o valor por defeito</td></tr>
+               <tr><td>TTL</td><td>por defeito</td></tr>
              </table>
            </li>
-           <li><b>Guarda.</b> Pode demorar de alguns minutos até algumas horas a ficar ativo.</li>
+           <li><b>Guarda.</b> Pode demorar de minutos a algumas horas a propagar.</li>
            <li>Volta aqui e clica em <b>"Verificar posse"</b>.</li>
          </ol>
-         <p class="note">💡 Não sabes onde está o domínio? Vê no teu email por uma fatura de "renovação de domínio". O remetente é o teu fornecedor.</p>
        </div>
      </div>
      <div id="vFile" class="hidden">
@@ -245,33 +258,45 @@ function viewVerify(){
        <div class="tut">
          <h3>Como fazer (passo a passo)</h3>
          <ol>
-           <li>No teu computador, cria um ficheiro de texto chamado <b>${draft.vtoken}.txt</b>.</li>
-           <li>Dentro do ficheiro, escreve o código: <b>${draft.vtoken}</b> e guarda.</li>
-           <li>Acede ao teu site por <b>gestor de ficheiros</b> (cPanel, Plesk) ou por <b>FTP</b> (ex: FileZilla) — é onde estão os ficheiros do site.</li>
-           <li>Coloca o ficheiro na <b>pasta raiz</b> do site (normalmente <code>public_html</code> ou <code>www</code>).</li>
-           <li>Confirma no browser que abre: <b>https://${host}/${draft.vtoken}.txt</b></li>
+           <li>No teu computador, cria um ficheiro chamado <b>${draft.vtoken}.txt</b>.</li>
+           <li>Dentro, escreve o código <b>${draft.vtoken}</b> e guarda.</li>
+           <li>Acede ao site por <b>gestor de ficheiros</b> (cPanel/Plesk) ou <b>FTP</b> (ex: FileZilla).</li>
+           <li>Coloca o ficheiro na <b>pasta raiz</b> (normalmente <code>public_html</code> ou <code>www</code>).</li>
+           <li>Confirma no browser: <b>https://${host}/${draft.vtoken}.txt</b></li>
            <li>Volta aqui e clica em <b>"Verificar posse"</b>.</li>
          </ol>
-         <p class="note">💡 Se o teu site é feito em WordPress/Wix/Shopify e não tens acesso a ficheiros, usa antes o método <b>Registo DNS</b>.</p>
+         <p class="note">💡 WordPress/Wix/Shopify sem acesso a ficheiros? Usa o método <b>Registo DNS</b>.</p>
        </div>
      </div>
-     <div class="info">🔎 Na versão final, o sistema verifica isto automaticamente. Neste protótipo, clica para simular a verificação.</div>
-     <div style="display:flex;gap:10px">
+     <div style="display:flex;gap:10px;margin-top:4px">
        <button class="btn sec sm" onclick="go('onboard')">← Voltar</button>
-       <button class="btn" onclick="doVerify()">Verificar posse</button>
+       <button class="btn" id="verBtn" onclick="doVerify()">Verificar posse</button>
      </div>
-     <div class="ok hidden" id="vOk">✓ Posse confirmada! A redirecionar para o contrato…</div>
+     <div class="err hidden" id="vErr"></div>
+     <div class="ok hidden" id="vOk"></div>
    </div>`;
 }
-function copyTok(t){ navigator.clipboard?.writeText(t); }
-function vmethod(m){
+let vMethod='dns';
+window.vmethod = m => {
+  vMethod=m;
   $('#mDns').classList.toggle('on',m==='dns');$('#mFile').classList.toggle('on',m==='file');
   $('#vDns').classList.toggle('hidden',m!=='dns');$('#vFile').classList.toggle('hidden',m!=='file');
-}
-function doVerify(){
-  draft.verified=true; $('#vOk').classList.remove('hidden');
-  setTimeout(()=>go('sign'),1100);
-}
+};
+window.copyTok = t => navigator.clipboard?.writeText(t);
+window.doVerify = async () => {
+  hide('vErr'); hide('vOk');
+  const btn=$('#verBtn'); btn.disabled=true; btn.innerHTML='<span class="spin"></span> A verificar…';
+  const { data, error } = await sb.functions.invoke('verify-domain', { body:{ site:draft.site, token:draft.vtoken, method:vMethod } });
+  btn.disabled=false; btn.textContent='Verificar posse';
+  if(error){ return showErr('vErr','Erro ao verificar. Tenta novamente daqui a pouco.'); }
+  if(data && data.verified){
+    draft.verified=true; draft.method=data.method||vMethod;
+    showOk('vOk','✓ Posse confirmada! A redirecionar para o contrato…');
+    setTimeout(()=>render('sign'),1000);
+  } else {
+    showErr('vErr','Ainda não encontrámos o código em '+hostOf(draft.site)+'. Confirma que guardaste e (no DNS) aguarda a propagação.');
+  }
+};
 
 /* ---------- SIGN / CONTRACT ---------- */
 function viewSign(){
@@ -284,32 +309,29 @@ function viewSign(){
      <div style="margin-top:16px">
        <label>A tua assinatura</label>
        <canvas id="sig"></canvas>
-       <div style="display:flex;gap:10px;margin-top:8px">
-         <button class="btn sec sm" onclick="clearSig()">Limpar assinatura</button>
-       </div>
+       <div style="display:flex;gap:10px;margin-top:8px"><button class="btn sec sm" onclick="clearSig()">Limpar assinatura</button></div>
      </div>
      <div style="display:flex;gap:10px;margin-top:18px">
        <button class="btn sec sm" onclick="go('verify')">← Voltar</button>
-       <button class="btn" onclick="submitContract()">Assinar e enviar contrato</button>
+       <button class="btn" id="subBtn" onclick="submitContract()">Assinar e enviar contrato</button>
      </div>
      <div class="err hidden" id="sgErr"></div>
    </div>`;
 }
 function renderContract(){
-  const s=DB.session(); const d=new Date().toLocaleDateString('pt-PT');
+  const d=new Date().toLocaleDateString('pt-PT');
   $('#contractDoc').innerHTML = `
     <h4>CONTRATO DE AUTORIZAÇÃO PARA TESTES DE SEGURANÇA</h4>
     <h5>Partes</h5>
     <p><b>Prestador:</b> Fortify — Auditoria de Segurança</p>
-    <p><b>Cliente:</b> ${draft.empresa||'—'} — NIF ${draft.nif||'—'} · Representante: ${draft.rep||'—'} · ${draft.contacto||''}</p>
+    <p><b>Cliente:</b> ${esc(draft.empresa)} — NIF ${esc(draft.nif)||'—'} · Representante: ${esc(draft.rep)} · ${esc(draft.contacto)}</p>
     <h5>Objeto</h5>
-    <p>O Cliente autoriza o Prestador a realizar uma análise de segurança ao website <b>${draft.site}</b>, cuja posse foi verificada. A análise cobre o OWASP Top 10, configuração e exposição de dados, excluindo ataques de negação de serviço e qualquer ação destrutiva.</p>
+    <p>O Cliente autoriza o Prestador a realizar uma análise de segurança ao website <b>${esc(draft.site)}</b>, cuja posse foi verificada (${esc(draft.method||'')}). A análise cobre o OWASP Top 10, configuração e exposição de dados, excluindo ataques de negação de serviço e qualquer ação destrutiva.</p>
     <h5>Confidencialidade e RGPD</h5>
     <p>As vulnerabilidades encontradas são confidenciais e entregues apenas ao Cliente. Ambas as partes cumprem o RGPD. O Cliente pode revogar esta autorização por escrito a qualquer momento.</p>
     <h5>Declaração</h5>
     <p>O Cliente declara ser o legítimo titular ou ter autoridade para autorizar esta análise. Aplica-se a lei portuguesa.</p>
-    <p style="margin-top:10px">Data: ${d} · Posse do site: <b>verificada</b></p>
-  `;
+    <p style="margin-top:10px">Data: ${d} · Posse do site: <b>verificada</b></p>`;
 }
 function initSig(){
   const c=$('#sig'); const r=c.getBoundingClientRect();
@@ -322,31 +344,38 @@ function initSig(){
   const end=()=>{drawing=false};
   c.addEventListener('mousedown',start);c.addEventListener('mousemove',move);window.addEventListener('mouseup',end);
   c.addEventListener('touchstart',start);c.addEventListener('touchmove',move);c.addEventListener('touchend',end);
-  sigPad={canvas:c,isEmpty:()=>empty,clear:()=>{ctx.clearRect(0,0,c.width,c.height);empty=true},data:()=>c.toDataURL()};
+  sigPad={isEmpty:()=>empty,clear:()=>{ctx.clearRect(0,0,c.width,c.height);empty=true},data:()=>c.toDataURL('image/png')};
 }
-function clearSig(){ if(sigPad) sigPad.clear(); }
-function submitContract(){
+window.clearSig = () => sigPad&&sigPad.clear();
+window.submitContract = async () => {
+  hide('sgErr');
   if(!sigPad||sigPad.isEmpty()) return showErr('sgErr','Assina no quadro antes de enviar.');
-  const s=DB.session();
-  const c={ id:uid(), userEmail:s.email, userName:s.name,
-    empresa:draft.empresa, nif:draft.nif, rep:draft.rep, site:draft.site, contacto:draft.contacto,
-    verified:true, signed:true, signature:sigPad.data(), date:Date.now() };
-  const all=DB.contracts(); all.push(c); DB.saveContracts(all);
-  draft={}; alert('✓ Contrato assinado e enviado! Já aparece no teu painel e no dashboard do admin.'); go('dash');
-}
+  const btn=$('#subBtn'); btn.disabled=true; btn.innerHTML='<span class="spin"></span> A enviar…';
+  const now=new Date().toISOString();
+  const { error } = await sb.from('contracts').insert({
+    user_id: me.id, empresa:draft.empresa, nif:draft.nif, representante:draft.rep, site:draft.site, contacto:draft.contacto,
+    verification_method:draft.method, verification_token:draft.vtoken, verified:true, verified_at:now,
+    signed:true, signature:sigPad.data(), signed_at:now
+  });
+  btn.disabled=false; btn.textContent='Assinar e enviar contrato';
+  if(error) return showErr('sgErr','Erro ao guardar: '+error.message);
+  draft={}; alert('✓ Contrato assinado e guardado! Já aparece no teu painel.'); render('dash');
+};
 
 /* ---------- ADMIN DASHBOARD ---------- */
-function viewAdmin(){
-  const all=DB.contracts().slice().reverse();
-  const stats={total:all.length, signed:all.filter(c=>c.signed).length, verified:all.filter(c=>c.verified).length};
-  const rows = all.length ? all.map(c=>`<tr>
-     <td>${c.id}</td><td>${c.empresa}<br><span class="muted" style="font-size:12px">${c.userName} · ${c.userEmail}</span></td>
-     <td>${c.site}</td><td>${c.nif||'—'}</td>
-     <td>${c.verified?'<span class="badge ok">✓</span>':'<span class="badge wait">—</span>'}</td>
+async function viewAdmin(){
+  $('#app').innerHTML = topbar('<span class="badge ok">ADMIN</span>') + `<div class="panel"><p class="muted">A carregar…</p></div>`;
+  const { data:all } = await sb.from('contracts').select('*').order('created_at',{ascending:false});
+  const list = all||[];
+  const stats={total:list.length, signed:list.filter(c=>c.signed).length, verified:list.filter(c=>c.verified).length};
+  const rows = list.length ? list.map(c=>`<tr>
+     <td>${c.id.slice(0,8)}</td><td>${esc(c.empresa)}<br><span class="muted" style="font-size:12px">${esc(c.representante)}</span></td>
+     <td>${esc(c.site)}</td><td>${esc(c.nif)||'—'}</td>
+     <td>${c.verified?'<span class="badge ok">✓ '+(esc(c.verification_method)||'')+'</span>':'<span class="badge wait">—</span>'}</td>
      <td>${c.signature?`<img src="${c.signature}" style="height:34px;background:#fff;border-radius:4px">`:'—'}</td>
-     <td>${new Date(c.date).toLocaleString('pt-PT')}</td></tr>`).join('')
+     <td>${new Date(c.created_at).toLocaleString('pt-PT')}</td></tr>`).join('')
      : `<tr><td colspan="7" class="muted">Ainda não há contratos submetidos.</td></tr>`;
-  return topbar('<span class="badge ok">ADMIN</span>') + `
+  $('#app').innerHTML = topbar('<span class="badge ok">ADMIN</span>') + `
    <div class="panel" style="display:flex;gap:24px">
      <div><div style="font-size:26px;font-weight:800">${stats.total}</div><div class="muted">Contratos</div></div>
      <div><div style="font-size:26px;font-weight:800;color:var(--accent)">${stats.signed}</div><div class="muted">Assinados</div></div>
@@ -361,7 +390,9 @@ function viewAdmin(){
    </div>`;
 }
 
-render();
+function esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+boot();
 </script>
 </body>
 </html>
