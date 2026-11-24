@@ -542,7 +542,9 @@
         +'<ul class="qlist">'+j.checks.map(function(x){return '<li><span class="m '+(x.ok?'y':'n')+'">'+(x.ok?'✓':'✕')+'</span><span><b>'+esc(x.label)+'</b>'+(x.ok?'':esc(x.tip))+'</span></li>';}).join('')+'</ul>'
         +'<div class="qcta"><button class="btn btn-p" onclick="goFull(\''+esc(j.host)+'\')">Receber relatório completo — 25€</button><a class="btn btn-g" href="relatorio-exemplo.html">Ver um exemplo</a><small>O relatório completo testa também formulários, logins e ficheiros expostos, com a correção para cada falha. Garantia: se não houver nada a melhorar, devolvemos os 25€.</small></div>';
     }catch(err){
-      var msg=(err&&err.message&&err.name!=='AbortError'&&err.message!=='Failed to fetch')?err.message:'Não conseguimos fazer o check agora.';
+      var net=!(err&&err.message&&err.name!=='AbortError'&&err.message!=='Failed to fetch');
+      var preview=/claude|claudeusercontent/i.test(location.hostname)||location.protocol==='file:';
+      var msg=!net?err.message:(preview?'O check não corre nesta pré-visualização: ela bloqueia ligações a servidores externos. No site publicado funciona normalmente.':'Não conseguimos ligar ao servidor de análise. Tenta de novo daqui a um minuto.');
       box.innerHTML='<p class="qerr">'+esc(msg)+'</p><div class="qcta"><button class="btn btn-p" onclick="goFull(\''+esc(host)+'\')">Continuar para o relatório completo</button></div>';
     }finally{ btn.disabled=false; btn.innerHTML=label; }
     return false;
