@@ -65,11 +65,77 @@
 <body>
 <div class="wrap" id="app"><p class="muted" style="margin-top:40px">A carregar…</p></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/supabase-js/2.39.3/supabase.min.js"></script>
 <script>
-const SUPABASE_URL = "https://xfavdiwdukzgmpiiigac.supabase.co";
-const SUPABASE_KEY = "sb_publishable_o2dfHvoDseiCVv1kvWDn8w_RDPX_bVK";
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const API = "https://xfavdiwdukzgmpiiigac.supabase.co";
+const KEY = "sb_publishable_o2dfHvoDseiCVv1kvWDn8w_RDPX_bVK";
+
+// Cliente mínimo que fala direto com a API do Supabase (sem bibliotecas externas)
+function tok(){ return localStorage.getItem('fortify_at'); }
+function setTok(a,r){ localStorage.setItem('fortify_at',a); if(r) localStorage.setItem('fortify_rt',r); }
+function clearTok(){ localStorage.removeItem('fortify_at'); localStorage.removeItem('fortify_rt'); }
+
+function qb(table){
+  const s = { table, filters:[], order:null, single:false, method:'GET', body:null, select:'*' };
+  const b = {
+    select(c){ s.method='GET'; s.select=c||'*'; return b; },
+    insert(o){ s.method='POST'; s.body=o; return b; },
+    eq(col,val){ s.filters.push(col+'=eq.'+encodeURIComponent(val)); return b; },
+    order(col,opt){ s.order=col+'.'+((opt&&opt.ascending===false)?'desc':'asc'); return b; },
+    maybeSingle(){ s.single=true; return b; },
+    then(res,rej){ return exec(s).then(res,rej); }
+  };
+  return b;
+}
+async function exec(s){
+  let path='/rest/v1/'+s.table, params=[];
+  if(s.method==='GET'){ params.push('select='+(s.select||'*')); s.filters.forEach(f=>params.push(f)); if(s.order) params.push('order='+s.order); }
+  if(params.length) path+='?'+params.join('&');
+  const headers={ apikey:KEY, 'Content-Type':'application/json', Authorization:'Bearer '+(tok()||KEY) };
+  const opt={ method:s.method, headers };
+  if(s.method==='POST'){ headers['Prefer']='return=minimal'; opt.body=JSON.stringify(s.body); }
+  try{
+    const r=await fetch(API+path,opt);
+    if(!r.ok){ const t=await r.text(); return {data:null,error:{message:t||('HTTP '+r.status)}}; }
+    if(s.method==='POST') return {data:null,error:null};
+    let data=await r.json();
+    if(s.single) data=Array.isArray(data)?(data[0]||null):data;
+    return {data,error:null};
+  }catch(e){ return {data:null,error:{message:String(e)}}; }
+}
+const sb = {
+  auth:{
+    async getSession(){
+      const at=tok(); if(!at) return {data:{session:null}};
+      const r=await fetch(API+'/auth/v1/user',{headers:{apikey:KEY,Authorization:'Bearer '+at}});
+      if(!r.ok){ clearTok(); return {data:{session:null}}; }
+      const user=await r.json(); return {data:{session:{user}}};
+    },
+    async signUp({email,password,options}){
+      const r=await fetch(API+'/auth/v1/signup',{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password,data:options&&options.data})});
+      const j=await r.json();
+      if(!r.ok) return {data:null,error:{message:j.msg||j.error_description||j.error||'Erro ao registar'}};
+      if(j.access_token){ setTok(j.access_token,j.refresh_token); return {data:{session:{user:j.user}},error:null}; }
+      return {data:{session:null},error:null};
+    },
+    async signInWithPassword({email,password}){
+      const r=await fetch(API+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+      const j=await r.json();
+      if(!r.ok) return {error:{message:j.msg||j.error_description||'Erro ao entrar'}};
+      setTok(j.access_token,j.refresh_token); return {error:null};
+    },
+    async signOut(){ clearTok(); return {}; }
+  },
+  from: qb,
+  functions:{
+    async invoke(name,{body}){
+      try{
+        const r=await fetch(API+'/functions/v1/'+name,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json',Authorization:'Bearer '+(tok()||KEY)},body:JSON.stringify(body)});
+        if(!r.ok) return {data:null,error:{message:'HTTP '+r.status}};
+        return {data:await r.json(),error:null};
+      }catch(e){ return {data:null,error:{message:String(e)}}; }
+    }
+  }
+};
 
 const $ = s => document.querySelector(s);
 let draft = {};
