@@ -69,6 +69,18 @@
 const API = "https://xfavdiwdukzgmpiiigac.supabase.co";
 const KEY = "sb_publishable_o2dfHvoDseiCVv1kvWDn8w_RDPX_bVK";
 
+// fetch com timeout, para nunca ficar preso
+async function fx(url,opt={},ms=12000){
+  const c=new AbortController(); const t=setTimeout(()=>c.abort(),ms);
+  try{ return await fetch(url,{...opt,signal:c.signal}); }
+  finally{ clearTimeout(t); }
+}
+// mensagem amigável quando a rede é bloqueada (ex: sandbox do preview) ou falha
+function net(e){
+  if(e&&e.name==='AbortError') return 'O servidor demorou a responder. Se estás a ver isto no preview do Claude, a sandbox bloqueia ligações externas — testa a plataforma alojada num site real.';
+  return 'Falha de ligação ao servidor. No preview do Claude as ligações externas são bloqueadas; funciona quando a página está alojada num site real.';
+}
+
 // Cliente mínimo que fala direto com a API do Supabase (sem bibliotecas externas)
 function tok(){ return localStorage.getItem('fortify_at'); }
 function setTok(a,r){ localStorage.setItem('fortify_at',a); if(r) localStorage.setItem('fortify_rt',r); }
@@ -94,7 +106,7 @@ async function exec(s){
   const opt={ method:s.method, headers };
   if(s.method==='POST'){ headers['Prefer']='return=minimal'; opt.body=JSON.stringify(s.body); }
   try{
-    const r=await fetch(API+path,opt);
+    const r=await fx(API+path,opt);
     if(!r.ok){ const t=await r.text(); return {data:null,error:{message:t||('HTTP '+r.status)}}; }
     if(s.method==='POST') return {data:null,error:null};
     let data=await r.json();
@@ -105,23 +117,29 @@ async function exec(s){
 const sb = {
   auth:{
     async getSession(){
-      const at=tok(); if(!at) return {data:{session:null}};
-      const r=await fetch(API+'/auth/v1/user',{headers:{apikey:KEY,Authorization:'Bearer '+at}});
-      if(!r.ok){ clearTok(); return {data:{session:null}}; }
-      const user=await r.json(); return {data:{session:{user}}};
+      try{
+        const at=tok(); if(!at) return {data:{session:null}};
+        const r=await fx(API+'/auth/v1/user',{headers:{apikey:KEY,Authorization:'Bearer '+at}});
+        if(!r.ok){ clearTok(); return {data:{session:null}}; }
+        const user=await r.json(); return {data:{session:{user}}};
+      }catch(e){ return {data:{session:null}}; }
     },
     async signUp({email,password,options}){
-      const r=await fetch(API+'/auth/v1/signup',{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password,data:options&&options.data})});
-      const j=await r.json();
-      if(!r.ok) return {data:null,error:{message:j.msg||j.error_description||j.error||'Erro ao registar'}};
-      if(j.access_token){ setTok(j.access_token,j.refresh_token); return {data:{session:{user:j.user}},error:null}; }
-      return {data:{session:null},error:null};
+      try{
+        const r=await fx(API+'/auth/v1/signup',{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password,data:options&&options.data})});
+        const j=await r.json();
+        if(!r.ok) return {data:null,error:{message:j.msg||j.error_description||j.error||'Erro ao registar'}};
+        if(j.access_token){ setTok(j.access_token,j.refresh_token); return {data:{session:{user:j.user}},error:null}; }
+        return {data:{session:null},error:null};
+      }catch(e){ return {data:null,error:{message:net(e)}}; }
     },
     async signInWithPassword({email,password}){
-      const r=await fetch(API+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})});
-      const j=await r.json();
-      if(!r.ok) return {error:{message:j.msg||j.error_description||'Erro ao entrar'}};
-      setTok(j.access_token,j.refresh_token); return {error:null};
+      try{
+        const r=await fx(API+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+        const j=await r.json();
+        if(!r.ok) return {error:{message:j.msg||j.error_description||'Erro ao entrar'}};
+        setTok(j.access_token,j.refresh_token); return {error:null};
+      }catch(e){ return {error:{message:net(e)}}; }
     },
     async signOut(){ clearTok(); return {}; }
   },
@@ -129,7 +147,7 @@ const sb = {
   functions:{
     async invoke(name,{body}){
       try{
-        const r=await fetch(API+'/functions/v1/'+name,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json',Authorization:'Bearer '+(tok()||KEY)},body:JSON.stringify(body)});
+        const r=await fx(API+'/functions/v1/'+name,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json',Authorization:'Bearer '+(tok()||KEY)},body:JSON.stringify(body)});
         if(!r.ok) return {data:null,error:{message:'HTTP '+r.status}};
         return {data:await r.json(),error:null};
       }catch(e){ return {data:null,error:{message:String(e)}}; }
